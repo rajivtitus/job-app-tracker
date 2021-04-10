@@ -4,24 +4,29 @@ import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faListAlt, faStar } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Nav = () => {
+  const { pathname } = useLocation();
   return (
     <StyledNav>
       <ul>
         <li>
-          <Link to="/">
+          <Link className={`link ${pathname === "/home" ? "active" : ""}`} to="/home">
             <FontAwesomeIcon icon={faHome} />
+            Home
           </Link>
         </li>
         <li>
-          <Link to="/stats">
+          <Link className={`link ${pathname === "/job-apps" ? "active" : ""}`} to="/job-apps">
             <FontAwesomeIcon icon={faListAlt} />
+            Apps
           </Link>
         </li>
         <li>
-          <Link to="/favorites">
+          <Link className={`link ${pathname === "/favorites" ? "active" : ""}`} to="/favorites">
             <FontAwesomeIcon icon={faStar} />
+            Favorites
           </Link>
         </li>
       </ul>
@@ -35,7 +40,8 @@ const StyledNav = styled(motion.nav)`
   left: 0;
   min-height: 100vh;
   width: 7.5%;
-  background: linear-gradient(165deg, rgba(192, 192, 192, 0.5), rgba(176, 224, 230, 0.7));
+  z-index: 2;
+  background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.5));
 
   ul {
     display: flex;
@@ -44,9 +50,20 @@ const StyledNav = styled(motion.nav)`
     justify-content: space-evenly;
     height: 100vh;
     list-style: none;
-    svg {
-      color: gold;
-      font-size: 2.5rem;
+    .link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      svg {
+        color: #aaa0f4;
+        font-size: 2.5rem;
+        transition: all 1s ease;
+      }
+    }
+    .link.active {
+      svg {
+        color: black;
+      }
     }
   }
 `;
