@@ -1,12 +1,12 @@
 import {GET_QUOTES} from '../consonants/quoteActions'
 
-const quotesReducer = (state = [], action) => {
+const quotesReducer = (quotes = [], action) => {
     switch(action.type){
         case GET_QUOTES:
             return [...action.payload]
         
         default:
-            return state;
+            return quotes;
 
     }
 }

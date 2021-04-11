@@ -27,17 +27,17 @@ const Home = () => {
   return (
     <Container>
       <StyledHome variants={fadeIn} initial="hidden" animate="show">
+        <StyledCard className="quotes" variants={scaleIn}>
+          <h2>Welcome, User!</h2>
+          <p>"{randomQuote?.text}"</p>
+          <p className="author">- {randomQuote?.author}</p>
+        </StyledCard>
         <StyledCard className="charts" variants={scaleIn}>
           <h2>Tracker</h2>
           <div className="chart">
             <p>{jobApps.length}</p>
             <p>{jobAppsToday}</p>
           </div>
-        </StyledCard>
-        <StyledCard className="quotes" variants={scaleIn}>
-          <h2>Quote Of The Day:</h2>
-          <p>"{randomQuote?.text}"</p>
-          <p className="author">- {randomQuote?.author}</p>
         </StyledCard>
         <StyledCard className="locations" variants={scaleIn}>
           <h2>Map Chart</h2>
@@ -51,7 +51,7 @@ export default Home;
 
 const StyledHome = styled(Glass)`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 3fr;
   grid-gap: 1.5rem;
 
   .charts {
@@ -79,4 +79,5 @@ const StyledCard = styled(Card)`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
+  text-align: center;
 `;

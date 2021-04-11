@@ -14,8 +14,20 @@ body {
     background-attachment: fixed;
     background-size: cover;
 
-    h1, h2, li {
+    li {
         font-family: 'Kiwi Maru', serif;
+    }
+
+    input, textarea, button {
+      border: none;
+      outline: none;
+      background: #CCC4F8;
+      font-family: 'Roboto', sans-serif;
+      padding: 0.25rem;
+      border-radius: 0.5rem;
+      &:focus {
+        border-bottom: 1px solid gray;
+      }
     }
 
     a {
