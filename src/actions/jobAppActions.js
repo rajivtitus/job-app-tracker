@@ -1,10 +1,9 @@
-import axios from 'axios'
-
-import * as jobActions from '../consonants/jobActions'
+import * as jobActions from '../constants/actionTypes'
+import {getJobAppsURL, createJobAppURL, deleteJobAppURL} from '../api'
 
 export const getJobApps = () => async (dispatch) => {
     try {
-        const {data} = await axios.get('http://localhost:5000/job-apps')
+        const {data} = await getJobAppsURL()
         dispatch({
             type: jobActions.GET_JOB_APPS,
             payload: data,
@@ -17,7 +16,7 @@ export const getJobApps = () => async (dispatch) => {
 
 export const createJobApp = (jobData) => async (dispatch) => {
     try {
-        const {data} = await axios.post('http://localhost:5000/job-apps', jobData)
+        const {data} = await createJobAppURL(jobData)
         dispatch({
             type: jobActions.CREATE_JOB_APP,
             payload: data,
@@ -30,7 +29,7 @@ export const createJobApp = (jobData) => async (dispatch) => {
 
 export const deleteJobApp = (appId) => async (dispatch) => {
     try {
-        await axios.delete(`http://localhost:5000/job-apps/${appId}`)
+        await deleteJobAppURL(appId)
         dispatch({
             type: jobActions.DELETE_JOB_APP,
             payload: appId

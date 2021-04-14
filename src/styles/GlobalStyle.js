@@ -21,9 +21,9 @@ body {
     input, textarea, button {
       border: none;
       outline: none;
-      background: #CCC4F8;
       font-family: 'Roboto', sans-serif;
-      padding: 0.25rem;
+      font-size: 1rem;
+      padding: 0.30rem;
       border-radius: 0.5rem;
       &:focus {
         border-bottom: 1px solid gray;

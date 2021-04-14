@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Container, Glass, Card } from "../styles/styles";
-import { fadeIn, scaleIn } from "../animations/animations";
+import { Container, Glass, Card } from "../../styles/styles";
+import { fadeIn, scaleIn } from "../../animations/animations";
+import { createJobApp } from "../../actions/jobAppActions";
 import JobApp from "./JobApp";
-import { createJobApp } from "../actions/jobAppActions";
 
 const JobApplications = () => {
   const { jobApps } = useSelector((state) => state);
@@ -105,6 +105,7 @@ const StyledCard = styled(Card)`
     }
     input,
     textarea {
+      background: #ccc4f8;
       width: 100%;
     }
     textarea {

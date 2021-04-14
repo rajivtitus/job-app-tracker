@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faBan, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 
-import { Card } from "../styles/styles";
-import { scaleIn } from "../animations/animations";
-import { deleteJobApp } from "../actions/jobAppActions";
+import { Card } from "../../styles/styles";
+import { scaleIn } from "../../animations/animations";
+import { deleteJobApp } from "../../actions/jobAppActions";
 
 const JobApp = ({ app }) => {
   const dispatch = useDispatch();

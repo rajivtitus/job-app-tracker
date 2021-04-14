@@ -1,13 +1,12 @@
-import {GET_QUOTES} from '../consonants/quoteActions'
+import * as actionTypes from '../constants/actionTypes'
 
 const quotesReducer = (quotes = [], action) => {
     switch(action.type){
-        case GET_QUOTES:
-            return [...action.payload]
+        case actionTypes.GET_QUOTES:
+            return action.payload
         
         default:
             return quotes;
-
     }
 }
 

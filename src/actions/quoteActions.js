@@ -1,10 +1,10 @@
-import axios from 'axios'
 
-import {GET_QUOTES} from '../consonants/quoteActions'
+import {GET_QUOTES} from '../constants/actionTypes'
+import {getQuotesURL} from '../api'
 
 export const getQuotes = () => async (dispatch) => {
     try {
-        const {data} = await axios.get('https://type.fit/api/quotes')
+        const {data} = await getQuotesURL()
         dispatch({
             type: GET_QUOTES,
             payload: data,
