@@ -1,64 +1,116 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import * as d3 from "d3";
 
 import { Container, Glass, Card } from "../../styles/styles";
 import { fadeIn, scaleIn } from "../../animations/animations";
-import DonutChart from "./DonutChart";
+import DoughnutChart from "./DoughnutChart";
 import LineChart from "./LineChart";
 
 const Home = () => {
-  const { jobApps, quotes, userProfile } = useSelector((state) => state);
+  const { jobApps, quotes, user } = useSelector((state) => state);
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-  //Filtering through state to compare job app dates with today's date
-  const today = new Date();
-  const jobAppsToday = jobApps.filter((app) => {
-    let appDate = new Date(app.createdAt);
-    return (
-      today.getDay() === appDate.getDay() &&
-      today.getMonth() === appDate.getMonth() &&
-      today.getFullYear() === appDate.getFullYear()
-    );
-  }).length;
-  const totalApps = jobApps.length;
-  const [pieData, setPieData] = useState([]);
+  //Local states for chart data
+  const [appsTodayData, setAppsTodayData] = useState({});
+  const [totalAppsData, setTotalAppsData] = useState({});
+  const [appsTimelineData, setAppsTimelineData] = useState({});
 
-  const generateDonutData = (value, length = 2) =>
-    d3.range(length).map((item) => ({
-      value: value,
-    }));
+  const appsTodayChartData = (jobApps) => {
+    const today = new Date();
+    const minAppsToday = 5;
+    //Filtering through state to compare job app dates with today's date
+    const appsCompletedToday = jobApps.filter((app) => {
+      let appDate = new Date(app.createdAt);
+      return (
+        today.getDay() === appDate.getDay() &&
+        today.getMonth() === appDate.getMonth() &&
+        today.getFullYear() === appDate.getFullYear()
+      );
+    }).length;
+    const appsPendingToday = appsCompletedToday < 5 ? minAppsToday - appsCompletedToday : 0;
+
+    const chartData = {
+      labels: ["Applications Today", "Pending"],
+      datasets: [
+        {
+          data: [appsCompletedToday, appsPendingToday],
+          backgroundColor: ["green", "orange"],
+        },
+      ],
+    };
+    setAppsTodayData(chartData);
+  };
+
+  const totalAppsChartData = (jobApps) => {
+    const totalActiveApps = jobApps.length;
+    const totalDormantApps = 2;
+
+    const chartData = {
+      labels: ["Active", "Dormant"],
+      datasets: [
+        {
+          data: [totalActiveApps, totalDormantApps],
+          backgroundColor: ["green", "red"],
+        },
+      ],
+    };
+    setTotalAppsData(chartData);
+  };
+
+  const appsTimelineChartData = (jobApps) => {
+    const userAccountCreated = new Date(user.profile.createdAt);
+    const firstMonth = userAccountCreated.getMonth();
+    const currentMonth = new Date().getMonth();
+    const activeMonths = getMonthsData(firstMonth, currentMonth);
+
+    const chartData = {
+      labels: activeMonths,
+    };
+    setAppsTimelineData(chartData);
+  };
+
+  const getMonthsData = (startMonth, endMonth) => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const result = [];
+    for (let i = startMonth; i <= endMonth; i++) {
+      result.push(months[i]);
+    }
+    return result;
+  };
 
   useEffect(() => {
-    let length;
-    jobAppsToday > 4 ? (length = 1) : (length = 2);
-    setPieData(generateDonutData(jobAppsToday, length));
-  }, [jobAppsToday]);
+    appsTodayChartData(jobApps);
+    totalAppsChartData(jobApps);
+    appsTimelineChartData(jobApps, user);
+  }, [jobApps]);
 
   return (
     <Container>
-      <StyledHome variants={fadeIn} initial="hidden" animate="show">
+      <StyledGlass variants={fadeIn} initial="hidden" animate="show">
         <Card className="quotes" variants={scaleIn}>
-          <h2>Welcome, {userProfile?.result?.firstName}!</h2>
+          <h2>Welcome, {user?.profile?.firstName}!</h2>
           <p>"{randomQuote?.text}"</p>
           <p className="author">- {randomQuote?.author}</p>
         </Card>
         <Card className="charts" variants={scaleIn}>
-          <DonutChart data={pieData} width={150} height={150} innerRadius={45} outerRadius={75} />
-          <DonutChart data={pieData} width={150} height={150} innerRadius={45} outerRadius={75} />
-          <DonutChart data={pieData} width={150} height={150} innerRadius={45} outerRadius={75} />
+          <div className="apps-today">
+            <DoughnutChart chartData={appsTodayData} />
+          </div>
+          <div className="total-apps">
+            <DoughnutChart chartData={totalAppsData} />
+          </div>
         </Card>
         <Card className="locations" variants={scaleIn}>
-          <LineChart />
+          <LineChart chartData={appsTimelineData} />
         </Card>
-      </StyledHome>
+      </StyledGlass>
     </Container>
   );
 };
 
 export default Home;
 
-const StyledHome = styled(Glass)`
+const StyledGlass = styled(Glass)`
   display: grid;
   grid-template-columns: 2fr 3fr;
   grid-gap: 1.5rem;
@@ -84,10 +136,9 @@ const StyledHome = styled(Glass)`
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1.75rem;
   }
   .locations {
     grid-column: 1/3;
-    grid-row: 2/5;
+    grid-row: 2/4;
   }
 `;

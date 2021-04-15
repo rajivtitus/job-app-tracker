@@ -12,7 +12,7 @@ import {getJobApps} from './actions/jobAppActions'
 import {getQuotes} from './actions/quoteActions'
 
 function App() {
-  const {userProfile: {token} } = useSelector(state => state)
+  const {user: {token} } = useSelector(state => state)
   const dispatch = useDispatch();
 
   useEffect(() => {

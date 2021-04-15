@@ -12,7 +12,7 @@ export const Container = styled(motion.div)`
 
 export const Glass = styled(motion.div)`
     height: 85vh;
-    width: 85%;  
+    width: 85%;
     background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3));
     border-radius: 1rem;
     padding: 1.5rem;
@@ -21,5 +21,6 @@ export const Card = styled(motion.div)`
     background: white;
     box-shadow: 10px 10px 20px rgba(160, 149, 244, 0.5);
     border-radius: 1rem;
+    padding: 0.5rem 1rem;
     overflow: hidden;
 `

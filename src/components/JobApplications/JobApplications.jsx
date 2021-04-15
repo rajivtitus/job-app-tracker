@@ -20,7 +20,7 @@ const JobApplications = () => {
 
   return (
     <Container>
-      <StyledJobApps variants={fadeIn} initial="hidden" animate="show">
+      <StyledGlass variants={fadeIn} initial="hidden" animate="show">
         <StyledCard className="form-card" variants={scaleIn}>
           <form onSubmit={handleSubmit(submitData)} autoComplete="off">
             <h2 className="form-title">Application Details</h2>
@@ -52,14 +52,14 @@ const JobApplications = () => {
             </div>
           ))}
         </div>
-      </StyledJobApps>
+      </StyledGlass>
     </Container>
   );
 };
 
 export default JobApplications;
 
-const StyledJobApps = styled(Glass)`
+const StyledGlass = styled(Glass)`
   display: flex;
   gap: 1.5rem;
   padding-right: 0rem;
@@ -81,49 +81,43 @@ const StyledJobApps = styled(Glass)`
 `;
 
 const StyledCard = styled(Card)`
+  max-height: 525px;
+  max-width: 425px;
+  form {
+    padding: 0rem 3.5rem;
+  }
   .form-title {
-    padding-bottom: 0.5rem;
+    padding: 1rem 0.5rem;
     text-align: center;
   }
-  form {
-    height: 100%;
-    max-width: 450px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    .row {
-      width: 60%;
-      margin: 0 auto;
-    }
-    .btn-container {
-      text-align: center;
-    }
-    label {
-      display: block;
-      padding-bottom: 0.5rem;
-    }
-    input,
-    textarea {
-      background: #ccc4f8;
-      width: 100%;
-    }
-    textarea {
-      height: 6rem;
-      resize: none;
-    }
-    button {
-      border: none;
-      background: #ccc4f8;
-      min-width: 7.5rem;
-      padding: 0.75rem 1.5rem;
-      margin-bottom: 1rem;
-      border-radius: 1rem;
-      font-size: 1rem;
-      transition: all 0.5s ease-out;
-      &:hover {
-        background: #aaa0f4;
-      }
+  .row {
+    margin: 1rem 0rem;
+  }
+  input,
+  textarea {
+    display: block;
+    width: 100%;
+    background: #ccc4f8;
+    margin-top: 0.25rem;
+  }
+  textarea {
+    height: 6rem;
+    resize: none;
+  }
+  .btn-container {
+    text-align: center;
+  }
+  button {
+    border: none;
+    background: #ccc4f8;
+    min-width: 7.5rem;
+    padding: 0.75rem 1.5rem;
+    margin: 0.75rem 0rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    transition: all 0.5s ease-out;
+    &:hover {
+      background: #aaa0f4;
     }
   }
 `;

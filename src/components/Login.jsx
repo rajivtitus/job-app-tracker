@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { Container, Glass } from "../styles/styles";
+import { Container } from "../styles/styles";
 import video from "../assets/login page video.mp4";
 import { fadeIn } from "../animations/animations";
 import { loginUser, registerUser } from "../actions/userActions";
@@ -27,40 +30,58 @@ const Login = () => {
   const switchMode = () => setIsRegister((prevIsRegister) => !prevIsRegister);
 
   return (
-    <StyledLogin>
+    <StyledLogin variants={fadeIn} initial="hidden" animate="show">
       <video className="home-video" autoPlay muted loop>
         <source src={video} type="video/mp4" />
       </video>
       <StyledContainer>
-        <h1 className="app-title">Transform Your Job Search</h1>
-        <StyledGlass variants={fadeIn} initial="hidden" animate="show">
+        <header>
+          <h1 className="app-title">Transform Your Job Search</h1>
+        </header>
+        <StyledGlass>
           <form onSubmit={handleSubmit(submitFormData)}>
+            <h2 className="form-title">{isRegister ? "Register" : "Login"}</h2>
             {isRegister && (
               <>
-                <label htmlFor="first-name">First Name:</label>
-                <input type="text" id="first-name" placeholder="First Name" {...register("firstName")} />
-                <label htmlFor="last-name">Last Name:</label>
-                <input type="text" id="last-name" placeholder="Last Name" {...register("lastName")} />
+                <div className="form-row">
+                  <label htmlFor="first-name">First Name:</label>
+                  <input type="text" id="first-name" placeholder="First Name" {...register("firstName")} />
+                </div>
+                <div className="form-row">
+                  <label htmlFor="last-name">Last Name:</label>
+                  <input type="text" id="last-name" placeholder="Last Name" {...register("lastName")} />
+                </div>
               </>
             )}
-            <label htmlFor="email">Email:</label>
-            <input type="text" id="email" placeholder="Email" {...register("email")} />
-            <label htmlFor="password">Password:</label>
-            <input type="password" id="password" placeholder="Password" {...register("password")} />
+            <div className="form-row">
+              <label htmlFor="email">Email:</label>
+              <input type="text" id="email" placeholder="Email" {...register("email")} />
+            </div>
+            <div className="form-row">
+              <label htmlFor="password">Password:</label>
+              <input type="password" id="password" placeholder="Password" {...register("password")} />
+            </div>
             {isRegister && (
               <>
-                <label htmlFor="confirm-password">Confirm Password:</label>
-                <input
-                  type="password"
-                  id="confirm-password"
-                  placeholder="Confirm Password"
-                  {...register("confirmPassword")}
-                />
+                <div className="form-row">
+                  <label htmlFor="confirm-password">Confirm Password:</label>
+                  <input
+                    type="password"
+                    id="confirm-password"
+                    placeholder="Confirm Password"
+                    {...register("confirmPassword")}
+                  />
+                </div>
               </>
             )}
-            <button type="submit">{isRegister ? "Register" : "Login"}</button>
+            <div className="form-row submit-btn">
+              <button type="submit">
+                {isRegister ? "Register " : "Login "}
+                <FontAwesomeIcon icon={faSignInAlt} />
+              </button>
+            </div>
             <div>
-              <button onClick={switchMode}>
+              <button className="switch-mode-btn" onClick={switchMode}>
                 {isRegister ? "Already have an account? Login Here" : "Don't have an account? Register here"}
               </button>
             </div>
@@ -73,7 +94,7 @@ const Login = () => {
 
 export default Login;
 
-const StyledLogin = styled.div`
+const StyledLogin = styled(motion.div)`
   .home-video {
     width: 100vw;
     height: 100vh;
@@ -85,41 +106,44 @@ const StyledLogin = styled.div`
 `;
 
 const StyledContainer = styled(Container)`
-  position: relative;
-  padding: 5rem;
+  flex-direction: column;
+  justify-content: space-evenly;
   background: rgba(0, 0, 0, 0.35);
+  padding: 0;
   .app-title {
-    position: absolute;
-    top: 5%;
-    left: 50%;
     letter-spacing: 3px;
-    transform: translate(-50%, -5%);
     text-shadow: 2px 2px black;
     color: white;
   }
 `;
 
-const StyledGlass = styled(Glass)`
-  height: 70vh;
+const StyledGlass = styled(motion.div)`
   max-width: 21.75rem;
-  padding: 1rem 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  form {
-    height: 100%;
+  background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.4));
+  border-radius: 1rem;
+  padding: 1.5rem;
+  .form-title {
+    text-align: center;
+  }
+  .form-row {
+    margin: 1.35rem 0rem;
+  }
+  input {
+    display: block;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-
-    input {
-      width: 100%;
-      background: #f5f5f5;
-    }
+    margin-top: 0.25rem;
+    background: #f5f5f5;
+  }
+  .submit-btn {
+    text-align: center;
+    margin-top: 2.5rem;
     button {
       width: 75%;
+      font-weight: 600;
     }
+  }
+  .switch-mode-btn {
+    background: none;
+    font-weight: 600;
   }
 `;

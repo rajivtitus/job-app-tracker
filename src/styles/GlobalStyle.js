@@ -14,16 +14,12 @@ body {
     background-attachment: fixed;
     background-size: cover;
 
-    li {
-        font-family: 'Kiwi Maru', serif;
-    }
-
     input, textarea, button {
       border: none;
       outline: none;
       font-family: 'Roboto', sans-serif;
       font-size: 1rem;
-      padding: 0.30rem;
+      padding: 0.35rem;
       border-radius: 0.5rem;
       &:focus {
         border-bottom: 1px solid gray;
@@ -33,6 +29,9 @@ body {
     a {
         text-decoration: none;
         color: black;
+    }
+    button {
+      cursor: pointer;
     }
 }
 
