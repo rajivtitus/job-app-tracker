@@ -9,7 +9,7 @@ const LineChart = ({ chartData }) => {
           labels: chartData.labels,
           datasets: [
             {
-              label: "My First Dataset",
+              label: "Monthly Performance Data",
               data: [65, 59, 80, 81, 56, 55, 0],
               fill: false,
               borderColor: "rgb(75, 192, 192)",
@@ -19,6 +19,14 @@ const LineChart = ({ chartData }) => {
         }}
         options={{
           maintainAspectRatio: false,
+          scales: {
+            xAxes: {
+              type: "time",
+              time: {
+                unit: "day",
+              },
+            },
+          },
         }}
       />
     </>

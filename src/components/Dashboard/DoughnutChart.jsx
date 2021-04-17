@@ -10,7 +10,20 @@ const DoughnutChart = ({ chartData }) => {
           datasets: chartData.datasets,
         }}
         options={{
+          title: {
+            display: true,
+            text: chartData.titleText,
+            fontSize: 20,
+            position: "bottom",
+          },
+          legend: {
+            display: true,
+          },
+          responsive: true,
           maintainAspectRatio: false,
+          layout: {
+            padding: 15,
+          },
         }}
       />
     </>

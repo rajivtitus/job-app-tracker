@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import { Container, Glass, Card } from "../../styles/styles";
+import { Container, Card } from "../../styles/styles";
 import { fadeIn, scaleIn } from "../../animations/animations";
 import DoughnutChart from "./DoughnutChart";
 import LineChart from "./LineChart";
 
-const Home = () => {
+const Dashboard = () => {
   const { jobApps, quotes, user } = useSelector((state) => state);
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
   //Local states for chart data
@@ -37,6 +37,7 @@ const Home = () => {
           backgroundColor: ["green", "orange"],
         },
       ],
+      titleText: `Applications Today: ${appsCompletedToday}`,
     };
     setAppsTodayData(chartData);
   };
@@ -46,25 +47,25 @@ const Home = () => {
     const totalDormantApps = 2;
 
     const chartData = {
-      labels: ["Active", "Dormant"],
+      labels: ["Active", "Inactive"],
       datasets: [
         {
           data: [totalActiveApps, totalDormantApps],
           backgroundColor: ["green", "red"],
         },
       ],
+      titleText: `Total Applications: ${totalActiveApps + totalDormantApps}`,
     };
     setTotalAppsData(chartData);
   };
 
-  const appsTimelineChartData = (jobApps) => {
-    const userAccountCreated = new Date(user.profile.createdAt);
+  const appsTimelineChartData = (jobApps, user) => {
+    const userAccountCreated = new Date(user?.profile?.createdAt);
     const firstMonth = userAccountCreated.getMonth();
     const currentMonth = new Date().getMonth();
-    const activeMonths = getMonthsData(firstMonth, currentMonth);
 
     const chartData = {
-      labels: activeMonths,
+      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     };
     setAppsTimelineData(chartData);
   };
@@ -82,63 +83,61 @@ const Home = () => {
     appsTodayChartData(jobApps);
     totalAppsChartData(jobApps);
     appsTimelineChartData(jobApps, user);
-  }, [jobApps]);
+  }, [jobApps, user]);
 
   return (
-    <Container>
-      <StyledGlass variants={fadeIn} initial="hidden" animate="show">
-        <Card className="quotes" variants={scaleIn}>
-          <h2>Welcome, {user?.profile?.firstName}!</h2>
-          <p>"{randomQuote?.text}"</p>
-          <p className="author">- {randomQuote?.author}</p>
-        </Card>
-        <Card className="charts" variants={scaleIn}>
-          <div className="apps-today">
-            <DoughnutChart chartData={appsTodayData} />
-          </div>
-          <div className="total-apps">
-            <DoughnutChart chartData={totalAppsData} />
-          </div>
-        </Card>
-        <Card className="locations" variants={scaleIn}>
-          <LineChart chartData={appsTimelineData} />
-        </Card>
-      </StyledGlass>
-    </Container>
+    <StyledContainer variants={fadeIn} initial="hidden" animate="show">
+      <Card className="quotes" variants={scaleIn}>
+        <h2>Welcome, {user?.profile?.firstName}!</h2>
+        <p>"{randomQuote?.text}"</p>
+        <p className="author">- {randomQuote?.author}</p>
+      </Card>
+      <Card className="charts" variants={scaleIn}>
+        <div className="apps-today">
+          <DoughnutChart chartData={appsTodayData} />
+        </div>
+        <div className="total-apps">
+          <DoughnutChart chartData={totalAppsData} />
+        </div>
+      </Card>
+      <Card className="locations" variants={scaleIn}>
+        <LineChart chartData={appsTimelineData} />
+      </Card>
+    </StyledContainer>
   );
 };
 
-export default Home;
+export default Dashboard;
 
-const StyledGlass = styled(Glass)`
+const StyledContainer = styled(Container)`
+  height: 100vh;
   display: grid;
   grid-template-columns: 2fr 3fr;
+  grid-template-rows: 2fr 3fr;
   grid-gap: 1.5rem;
 
   .quotes {
-    grid-row: 1/2;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
     text-align: center;
     p {
-      padding: 0rem 2rem;
+      padding: 0rem 1.5rem;
     }
     .author {
       align-self: flex-end;
       font-style: italic;
-      color: grey;
+      color: gray;
     }
   }
+
   .charts {
-    grid-row: 1/2;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-evenly;
   }
+
   .locations {
     grid-column: 1/3;
-    grid-row: 2/4;
   }
 `;

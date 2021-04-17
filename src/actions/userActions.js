@@ -1,17 +1,23 @@
-import { REGISTER_USER, LOGIN_USER} from '../constants/actionTypes'
+import * as actionTypes from '../constants/actionTypes'
 import {registerURL, loginURL} from '../api'
 
 export const registerUser = (formData, history) => async (dispatch) => {
     try {
         const {data} = await registerURL(formData)
         dispatch({
-            type: REGISTER_USER,
+            type: actionTypes.REGISTER_USER,
             payload: data,
         })
-        history.push('/home')
+        history.push('/dashboard')
     }
     catch(err) {
-        console.log(err)
+        if(err.response){
+            console.log(err.response);
+            dispatch({
+                type: actionTypes.HAS_ERROR,
+                payload: err.response.data
+            })
+        }
     }
 }
 
@@ -19,12 +25,18 @@ export const loginUser = (formData, history) => async (dispatch) => {
     try {
         const {data} = await loginURL(formData)
         dispatch({
-            type: LOGIN_USER,
+            type: actionTypes.LOGIN_USER,
             payload: data,
         })
-        history.push('/home')
+        history.push('/dashboard')
     }
     catch(err) {
-        console.log(err)
+        if(err.response){
+            console.log(err.response);
+            dispatch({
+                type: actionTypes.HAS_ERROR,
+                payload: err.response.data
+            })
+        }
     }
 }

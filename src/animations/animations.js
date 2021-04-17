@@ -6,21 +6,19 @@ export const fadeIn = {
     show: {
         opacity: 1,
         transition: {
-            duration: 0.75,
+            duration: 0.35,
         }
     }
 }
 
 export const scaleIn = {
     hidden: {
-        opacity: 0.5,
-        scale: 0.95
+        scale: 0.99
     },
     show: {
-        opacity: 1,
         scale: 1,
         transition: {
-            duration: 1,
+            duration: 0.5,
         }
     }
 }

@@ -1,12 +1,12 @@
 import * as actionTypes from '../constants/actionTypes'
 
-const quotesReducer = (quotes = [], action) => {
+const quotesReducer = (state = [], action) => {
     switch(action.type){
         case actionTypes.GET_QUOTES:
             return action.payload
         
         default:
-            return quotes;
+            return state;
     }
 }
 
