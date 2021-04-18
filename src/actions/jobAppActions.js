@@ -1,11 +1,12 @@
-import * as jobActions from '../constants/actionTypes'
-import {getJobAppsURL, createJobAppURL, deleteJobAppURL} from '../api'
+import * as actionTypes from '../constants/actionTypes'
+import {getJobAppsURL, createJobAppURL, deleteJobAppURL, updateJobAppURL, inactiveJobAppURL} from '../api'
+
 
 export const getJobApps = () => async (dispatch) => {
     try {
         const {data} = await getJobAppsURL()
         dispatch({
-            type: jobActions.GET_JOB_APPS,
+            type: actionTypes.GET_JOB_APPS,
             payload: data,
         })
     }
@@ -18,7 +19,7 @@ export const createJobApp = (jobData) => async (dispatch) => {
     try {
         const {data} = await createJobAppURL(jobData)
         dispatch({
-            type: jobActions.CREATE_JOB_APP,
+            type: actionTypes.CREATE_JOB_APP,
             payload: data,
         })
     }
@@ -31,7 +32,7 @@ export const deleteJobApp = (appId) => async (dispatch) => {
     try {
         await deleteJobAppURL(appId)
         dispatch({
-            type: jobActions.DELETE_JOB_APP,
+            type: actionTypes.DELETE_JOB_APP,
             payload: appId
         })
     }
@@ -39,3 +40,20 @@ export const deleteJobApp = (appId) => async (dispatch) => {
         console.log(error)
     }    
 }
+
+export const inactiveJobApp = (appId) => async (dispatch) => {
+    try {
+        const {data} = await inactiveJobAppURL(appId);
+        dispatch({
+            type: actionTypes.INACTIVE_JOB_APP,
+            payload: data
+        })
+    }
+    catch(error){
+        console.log(error)
+    }    
+}
+
+// export const updateJobApp = (appId, jobData) => async (dispatch) => {
+
+// }

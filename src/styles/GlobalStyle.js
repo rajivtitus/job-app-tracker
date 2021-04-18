@@ -34,11 +34,12 @@ html {
         }
 
         h3 {   
-          font-size: 1.95rem;
+          font-size: 1.75rem;
         }
 
         h4 {
           font-size: 1.45rem;
+          font-weight: normal;
         }
 
         h5 {
@@ -46,26 +47,25 @@ html {
           color: gray;
         }
 
-        p, li, label {
+        p, li, label, select {
           font-size: 1.40rem;
           line-height: 145%; 
         }
 
         input, textarea, button {
-          border: none;
+          border: 1px solid transparent;
           outline: none;
           font-family: 'Roboto', sans-serif;
           font-size: 1.35rem;
           padding: 0.45rem;
           border-radius: 0.5rem;
           &:focus {
-            border-bottom: 1px solid gray;
+            border: 1px solid black;
           }
         }    
 
-        button {
+        button, select {
           cursor: pointer;
-          font-weight: 600;
         }
     }
 }

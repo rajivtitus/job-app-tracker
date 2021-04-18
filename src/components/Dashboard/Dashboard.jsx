@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import moment from "moment";
 
 import { Container, Card } from "../../styles/styles";
 import { fadeIn, scaleIn } from "../../animations/animations";
@@ -8,9 +9,13 @@ import DoughnutChart from "./DoughnutChart";
 import LineChart from "./LineChart";
 
 const Dashboard = () => {
-  const { jobApps, quotes, user } = useSelector((state) => state);
+  const {
+    jobApps,
+    quotes,
+    user: { profile },
+  } = useSelector((state) => state);
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-  //Local states for chart data
+  //Local states for chart's data
   const [appsTodayData, setAppsTodayData] = useState({});
   const [totalAppsData, setTotalAppsData] = useState({});
   const [appsTimelineData, setAppsTimelineData] = useState({});
@@ -18,15 +23,7 @@ const Dashboard = () => {
   const appsTodayChartData = (jobApps) => {
     const today = new Date();
     const minAppsToday = 5;
-    //Filtering through state to compare job app dates with today's date
-    const appsCompletedToday = jobApps.filter((app) => {
-      let appDate = new Date(app.createdAt);
-      return (
-        today.getDay() === appDate.getDay() &&
-        today.getMonth() === appDate.getMonth() &&
-        today.getFullYear() === appDate.getFullYear()
-      );
-    }).length;
+    const appsCompletedToday = getAppsPerDay(jobApps, today);
     const appsPendingToday = appsCompletedToday < 5 ? minAppsToday - appsCompletedToday : 0;
 
     const chartData = {
@@ -43,8 +40,8 @@ const Dashboard = () => {
   };
 
   const totalAppsChartData = (jobApps) => {
-    const totalActiveApps = jobApps.length;
-    const totalDormantApps = 2;
+    const totalActiveApps = jobApps.filter((app) => app.active).length;
+    const totalDormantApps = jobApps.filter((app) => !app.active).length;
 
     const chartData = {
       labels: ["Active", "Inactive"],
@@ -59,36 +56,80 @@ const Dashboard = () => {
     setTotalAppsData(chartData);
   };
 
-  const appsTimelineChartData = (jobApps, user) => {
-    const userAccountCreated = new Date(user?.profile?.createdAt);
-    const firstMonth = userAccountCreated.getMonth();
-    const currentMonth = new Date().getMonth();
+  const appsTimelineChartData = (jobApps, profile) => {
+    const profileCreatedDate = new Date(profile?.createdAt);
+    const today = new Date();
+    const { _d: thirtyDaysAgo } = moment(today).subtract(31, "days");
+    const labels = [];
+    const data = [];
+
+    //Checking to see if User Profile is older than 30 days(to show the past 30 days data)
+    if (profileCreatedDate <= thirtyDaysAgo) {
+      for (let i = 1; i <= 31; i++) {
+        //Generating labels in mm/dd format for line chart
+        let targetDate = new Date(moment(thirtyDaysAgo).add(i, "days"));
+        let day = targetDate.getUTCDate();
+        let month = targetDate.getUTCMonth() + 1;
+        labels.push([month + "/" + day]);
+
+        //Generating data for each date
+        const totalAppsPerDay = getAppsPerDay(jobApps, targetDate);
+
+        data.push(totalAppsPerDay);
+      }
+    }
+    //If account is not older than 30 days, then just show data from the day account was created
+    else {
+      //Converting dates to moment objects to iterate from start date to end date
+      let startDate = moment(profileCreatedDate, "DD-MM-YYYY");
+      let endDate = moment(today, "DD-MM-YYYY");
+      let dateDiff = endDate.diff(startDate, "days");
+
+      for (let i = 1; i <= dateDiff; i++) {
+        //Generating labels in mm/dd format for line chart
+        let targetDate = new Date(moment(startDate).add(i, "days"));
+        let day = targetDate.getUTCDate();
+        let month = targetDate.getUTCMonth() + 1;
+        labels.push([month + "/" + day]);
+
+        //Generating data for each date
+        const totalAppsPerDay = getAppsPerDay(jobApps, targetDate);
+
+        data.push(totalAppsPerDay);
+      }
+    }
 
     const chartData = {
-      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      labels,
+      data,
     };
     setAppsTimelineData(chartData);
   };
 
-  const getMonthsData = (startMonth, endMonth) => {
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const result = [];
-    for (let i = startMonth; i <= endMonth; i++) {
-      result.push(months[i]);
-    }
-    return result;
+  //Function to calculate apps-per-day
+  const getAppsPerDay = (appsList, targetDate) => {
+    //Filtering through list to compare job app dates with target date
+    const appsPerDay = appsList.filter((app) => {
+      let appDate = new Date(app.createdAt);
+      return (
+        targetDate.getDay() === appDate.getDay() &&
+        targetDate.getMonth() === appDate.getMonth() &&
+        targetDate.getFullYear() === appDate.getFullYear()
+      );
+    }).length;
+    return appsPerDay;
   };
 
   useEffect(() => {
     appsTodayChartData(jobApps);
     totalAppsChartData(jobApps);
-    appsTimelineChartData(jobApps, user);
-  }, [jobApps, user]);
+    appsTimelineChartData(jobApps, profile);
+  }, [jobApps, profile]);
 
   return (
     <StyledContainer variants={fadeIn} initial="hidden" animate="show">
       <Card className="quotes" variants={scaleIn}>
-        <h2>Welcome, {user?.profile?.firstName}!</h2>
+        <h2>Welcome, {profile?.firstName}!</h2>
         <p>"{randomQuote?.text}"</p>
         <p className="author">- {randomQuote?.author}</p>
       </Card>

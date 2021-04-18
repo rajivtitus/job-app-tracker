@@ -9,23 +9,31 @@ const LineChart = ({ chartData }) => {
           labels: chartData.labels,
           datasets: [
             {
-              label: "Monthly Performance Data",
-              data: [65, 59, 80, 81, 56, 55, 0],
+              label: "Applications Per Day",
+              data: chartData.data,
               fill: false,
-              borderColor: "rgb(75, 192, 192)",
+              borderColor: "rgb(75, 126, 192)",
               tension: 0.1,
             },
           ],
         }}
         options={{
+          responsive: true,
           maintainAspectRatio: false,
           scales: {
-            xAxes: {
-              type: "time",
-              time: {
-                unit: "day",
+            yAxes: [
+              {
+                scaleLabel: {
+                  display: true,
+                  labelString: "Number of Apps",
+                },
+                ticks: {
+                  min: 0,
+                  beginAtZero: true,
+                  stepSize: 1,
+                },
               },
-            },
+            ],
           },
         }}
       />

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faBan, faTrash, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faBan, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { Container, Card } from "../../styles/styles";
+import { Button1, Button2, Container, Card } from "../../styles/styles";
 
 const JobAppDetails = () => {
   const { pathname } = useLocation();
@@ -15,43 +15,58 @@ const JobAppDetails = () => {
 
   return (
     <StyledContainer>
-      <StyledCard>
-        <div className="card-header">
-          <Link to="/job-apps">
-            <button>Go Back</button>
-          </Link>
-          <h5>
-            <FontAwesomeIcon icon={faCheck} color="green" />
-            {jobDetails?.status}
-          </h5>
-        </div>
-        <div className="card-content">
-          <h2>{jobDetails?.jobTitle}</h2>
-          <h3>{jobDetails?.companyName}</h3>
-          <h5>{jobDetails?.location}</h5>
-          <p>{jobDetails?.notes}</p>
-        </div>
-        <div className="card-actions">
-          {!logCall && <button onClick={() => setLogCall((prevState) => !prevState)}>Log Activity</button>}
-        </div>
-        {logCall && (
-          <div className="log-activity">
-            <button onClick={() => setLogCall((prevState) => !prevState)}>
-              <FontAwesomeIcon icon={faTimes} size="2x" />
-            </button>
-            <label htmlFor="activity">Activity Type:</label>
-            <select name="cars" id="cars">
-              <option value="call">Call</option>
-              <option value="email">Email</option>
-              <option value="linkedin">LinkedIn</option>
-              <option value="other">Other</option>
-            </select>
-            <label>Activity Notes:</label>
-            <textarea></textarea>
-            <button>Submit</button>
+      {jobDetails && (
+        <StyledCard>
+          <div className="card-header">
+            <Link to="/job-apps">
+              <Button2>Go Back</Button2>
+            </Link>
+            {jobDetails.active ? (
+              <h5>
+                <FontAwesomeIcon icon={faCheck} color="green" />
+                Active
+              </h5>
+            ) : (
+              <h5>
+                <FontAwesomeIcon icon={faBan} color="Red" />
+                Inactive
+              </h5>
+            )}
           </div>
-        )}
-      </StyledCard>
+          <div className="card-content">
+            <h3>{jobDetails.jobTitle}</h3>
+            <h4>{jobDetails.companyName}</h4>
+            <h5>{jobDetails.location}</h5>
+            <p>{jobDetails.notes}</p>
+          </div>
+          <div className="card-actions">
+            {!logCall && (
+              <Button1 disabled={!jobDetails.active} onClick={() => setLogCall((prevState) => !prevState)}>
+                Log Activity
+              </Button1>
+            )}
+          </div>
+          {logCall && (
+            <div className="log-activity">
+              <button onClick={() => setLogCall((prevState) => !prevState)}>
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+              <form>
+                <label htmlFor="activity">Activity Type:</label>
+                <select name="activity" id="activity">
+                  <option value="call">Call</option>
+                  <option value="email">Email</option>
+                  <option value="linkedin">LinkedIn</option>
+                  <option value="other">Other</option>
+                </select>
+                <label>Activity Notes:</label>
+                <textarea></textarea>
+                <Button1 type="submit">Log</Button1>
+              </form>
+            </div>
+          )}
+        </StyledCard>
+      )}
     </StyledContainer>
   );
 };
@@ -84,12 +99,5 @@ const StyledCard = styled(Card)`
 
   .card-actions {
     text-align: center;
-    button {
-      min-width: 8.5rem;
-      padding: 1rem 1.5rem;
-      margin: 0.75rem 0rem;
-      background: #323c47;
-      color: white;
-    }
   }
 `;

@@ -160,6 +160,7 @@ const Glass = styled(motion.div)`
     margin-top: 2.5rem;
     button {
       width: 75%;
+      font-weight: 600;
     }
   }
   .switch-mode-btn {

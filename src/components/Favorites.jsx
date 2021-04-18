@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Container } from "../styles/styles";
-import { fadeIn, scaleIn } from "../animations/animations";
+import { fadeIn } from "../animations/animations";
 
 const Favorites = () => {
   return (

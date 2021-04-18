@@ -5,7 +5,7 @@ export const Container = styled(motion.div)`
     min-height: 100vh;
     width: 100%;
     padding: 2.5rem;
-    padding-left: 15%;
+    padding-left: 16%;
 `
 export const Card = styled(motion.div)`
     background: white;
@@ -13,4 +13,22 @@ export const Card = styled(motion.div)`
     border-radius: 0.5rem;
     padding: 1rem 1.5rem;
     overflow: hidden;
+`
+
+export const Button1 = styled.button`
+    min-width: 8.5rem;
+    padding: 1rem 1.5rem;
+    margin: 0.75rem 0rem;
+    background: #323c47;
+    color: white;
+
+`
+
+export const Button2 = styled.button`
+    padding: 0.75rem;
+    background: none;
+    border: 1px solid transparent;
+    &:hover {
+        border: 1px solid gray;
+      }
 `

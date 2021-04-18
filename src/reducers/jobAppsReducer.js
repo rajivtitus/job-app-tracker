@@ -11,6 +11,10 @@ const jobAppsReducer = (state = [], action) => {
         case actionTypes.DELETE_JOB_APP:
             return state.filter(app => app._id !== action.payload)
 
+        case actionTypes.UPDATE_JOB_APP:
+        case actionTypes.INACTIVE_JOB_APP:
+            return state.map(app => app._id === action.payload._id ? action.payload : app)
+
         default:
             return state
     }

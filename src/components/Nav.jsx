@@ -69,9 +69,9 @@ const StyledNav = styled(motion.nav)`
   top: 0;
   left: 0;
   height: 100vh;
-  width: 12.5%;
+  width: 14%;
   z-index: 2;
-  padding: 1rem 0.75rem;
+  padding: 1rem;
   background-color: #485461;
   background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
 
