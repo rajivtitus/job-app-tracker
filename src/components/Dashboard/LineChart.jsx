@@ -9,7 +9,7 @@ const LineChart = ({ chartData }) => {
           labels: chartData.labels,
           datasets: [
             {
-              label: "Applications Per Day",
+              label: "Applications",
               data: chartData.data,
               fill: false,
               borderColor: "rgb(75, 126, 192)",
@@ -21,6 +21,14 @@ const LineChart = ({ chartData }) => {
           responsive: true,
           maintainAspectRatio: false,
           scales: {
+            xAxes: [
+              {
+                scaleLabel: {
+                  display: true,
+                  labelString: "Date Range",
+                },
+              },
+            ],
             yAxes: [
               {
                 scaleLabel: {

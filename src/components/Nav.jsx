@@ -102,7 +102,6 @@ const StyledNav = styled(motion.nav)`
       align-items: center;
       text-decoration: none;
       color: lightgray;
-      gap: 0.5rem;
       &:hover {
         color: white;
       }

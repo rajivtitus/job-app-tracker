@@ -8,7 +8,7 @@ export const fadeIn = {
         transition: {
             duration: 0.35,
         }
-    }
+    },
 }
 
 export const scaleIn = {

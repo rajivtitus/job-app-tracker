@@ -59,17 +59,17 @@ const Dashboard = () => {
   const appsTimelineChartData = (jobApps, profile) => {
     const profileCreatedDate = new Date(profile?.createdAt);
     const today = new Date();
-    const { _d: thirtyDaysAgo } = moment(today).subtract(31, "days");
+    const { _d: thirtyDaysAgo } = moment(today).subtract(30, "days");
     const labels = [];
     const data = [];
 
     //Checking to see if User Profile is older than 30 days(to show the past 30 days data)
     if (profileCreatedDate <= thirtyDaysAgo) {
-      for (let i = 1; i <= 31; i++) {
+      for (let i = 0; i <= 30; i++) {
         //Generating labels in mm/dd format for line chart
         let targetDate = new Date(moment(thirtyDaysAgo).add(i, "days"));
-        let day = targetDate.getUTCDate();
-        let month = targetDate.getUTCMonth() + 1;
+        let day = targetDate.getDate();
+        let month = targetDate.getMonth() + 1;
         labels.push([month + "/" + day]);
 
         //Generating data for each date
@@ -81,15 +81,15 @@ const Dashboard = () => {
     //If account is not older than 30 days, then just show data from the day account was created
     else {
       //Converting dates to moment objects to iterate from start date to end date
-      let startDate = moment(profileCreatedDate, "DD-MM-YYYY");
-      let endDate = moment(today, "DD-MM-YYYY");
-      let dateDiff = endDate.diff(startDate, "days");
+      let startDate = moment(profileCreatedDate).local();
+      let endDate = moment(today).local();
+      let dateDiff = Math.round(endDate.diff(startDate, "days", true));
 
-      for (let i = 1; i <= dateDiff; i++) {
+      for (let i = 0; i <= dateDiff; i++) {
         //Generating labels in mm/dd format for line chart
         let targetDate = new Date(moment(startDate).add(i, "days"));
-        let day = targetDate.getUTCDate();
-        let month = targetDate.getUTCMonth() + 1;
+        let day = targetDate.getDate();
+        let month = targetDate.getMonth() + 1;
         labels.push([month + "/" + day]);
 
         //Generating data for each date

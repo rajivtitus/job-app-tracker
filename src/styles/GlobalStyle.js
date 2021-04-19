@@ -44,12 +44,12 @@ html {
 
         h5 {
           font-size: 1.25rem;
-          color: gray;
+          color: #60666d;
         }
 
         p, li, label, select {
           font-size: 1.40rem;
-          line-height: 145%; 
+          line-height: 135%; 
         }
 
         input, textarea, button {
@@ -66,6 +66,10 @@ html {
 
         button, select {
           cursor: pointer;
+        }
+
+        svg {
+          margin-right: 0.5rem;
         }
     }
 }

@@ -16,8 +16,7 @@ import * as actionTypes from './constants/actionTypes'
 function App() {
   const {user: {token} } = useSelector(state => state)
   const dispatch = useDispatch();
-  const history = useHistory();
-  
+  const history = useHistory();  
     
   useEffect(() => {
     if (token) {

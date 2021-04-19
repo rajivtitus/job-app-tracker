@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
+import moment from "moment";
 
-import { Button1, Container, Card } from "../../styles/styles";
+import { Button1, Container, Card, Select } from "../../styles/styles";
 import { fadeIn } from "../../animations/animations";
 import { createJobApp } from "../../actions/jobAppActions";
 import JobApp from "./JobApp";
 
 const JobApplications = () => {
   const { jobApps } = useSelector((state) => state);
-  const [sortType, setSortType] = useState("");
-  const [filterType, setFilterType] = useState("");
+  const [filterType, setFilterType] = useState("none");
+  const [sortType, setSortType] = useState("recent");
+  const [filteredJobApps, setFilteredJobApps] = useState([]);
+  const [sortedJobApps, setSortedJobApps] = useState([]);
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
 
@@ -20,10 +23,41 @@ const JobApplications = () => {
     reset();
   };
 
+  const filterJobApps = (filterType, jobApps) => {
+    if (filterType === "none") {
+      const allApps = [...jobApps];
+      setFilteredJobApps(allApps);
+    } else if (filterType === "active") {
+      const activeApps = jobApps.filter((app) => app.active);
+      setFilteredJobApps(activeApps);
+    } else if (filterType === "inactive") {
+      const inactiveApps = jobApps.filter((app) => !app.active);
+      setFilteredJobApps(inactiveApps);
+    }
+  };
+
+  const sortJobApps = (sortType, filteredJobApps) => {
+    if (sortType === "recent") {
+      const recentApps = [...filteredJobApps].sort((app1, app2) => moment(app2.createdAt) - moment(app1.createdAt));
+      setSortedJobApps(recentApps);
+    } else if (sortType === "older") {
+      const olderApps = [...filteredJobApps].sort((app1, app2) => moment(app1.createdAt) - moment(app2.createdAt));
+      setSortedJobApps(olderApps);
+    }
+  };
+
+  useEffect(() => {
+    filterJobApps(filterType, jobApps);
+  }, [filterType, jobApps]);
+
+  useEffect(() => {
+    sortJobApps(sortType, filteredJobApps);
+  }, [sortType, filteredJobApps]);
+
   return (
     <StyledContainer variants={fadeIn} initial="hidden" animate="show">
       <StyledFormCard className="form-card">
-        <h2 className="form-title">Application Details</h2>
+        <h2>Application Details</h2>
         <form onSubmit={handleSubmit(submitData)} autoComplete="off">
           <div className="row">
             <label htmlFor="job-title">Job Title:</label>
@@ -48,22 +82,23 @@ const JobApplications = () => {
       </StyledFormCard>
       <div className="job-apps-container">
         <div className="toolbar">
-          <div className="sort">
+          <div className="dropdown">
             <label htmlFor="sort">Sort: </label>
-            <select name="sort" id="sort">
-              <option>Newest</option>
-              <option>Oldest</option>
-            </select>
+            <Select name="sort" id="sort" onChange={(e) => setSortType(e.target.value)}>
+              <option value="recent">Recent</option>
+              <option value="older">Older</option>
+            </Select>
           </div>
-          <div className="filter">
+          <div className="dropdown">
             <label htmlFor="filter">Filter: </label>
-            <select name="filter" id="filter">
-              <option>Active</option>
-              <option>Inactive</option>
-            </select>
+            <Select name="filter" id="filter" onChange={(e) => setFilterType(e.target.value)}>
+              <option value="none">None</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </Select>
           </div>
         </div>
-        {jobApps.map((app) => (
+        {sortedJobApps.map((app) => (
           <div key={app._id}>
             <JobApp app={app} />
           </div>
@@ -109,10 +144,9 @@ const StyledContainer = styled(Container)`
     justify-content: flex-end;
     gap: 1.5rem;
     margin-bottom: 2rem;
-    border-bottom: 2px solid #475360;
+    border-bottom: 1px solid #475360;
   }
-  .sort,
-  .filter {
+  .dropdown {
     margin-bottom: 0.75rem;
   }
 `;
@@ -120,29 +154,30 @@ const StyledContainer = styled(Container)`
 const StyledFormCard = styled(Card)`
   max-height: 45rem;
   max-width: 30rem;
-  margin-top: 2.5rem;
 
-  .form-title {
+  h2 {
     padding: 1rem 0rem;
     text-align: center;
   }
   form {
     padding: 0rem 2.5rem;
+    input,
+    textarea {
+      display: block;
+      width: 100%;
+      background: #bbb8bc;
+      margin-top: 0.25rem;
+    }
+    textarea {
+      height: 10rem;
+      resize: none;
+    }
   }
+
   .row {
     margin: 1rem 0rem;
   }
-  input,
-  textarea {
-    display: block;
-    width: 100%;
-    background: #bbb8bc;
-    margin-top: 0.25rem;
-  }
-  textarea {
-    height: 10rem;
-    resize: none;
-  }
+
   .btn-container {
     text-align: center;
   }

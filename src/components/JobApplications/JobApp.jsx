@@ -63,19 +63,21 @@ export default JobApp;
 const StyledCard = styled(Card)`
   min-height: 15vh;
   margin-bottom: 2rem;
-  svg {
-    margin-right: 0.45rem;
-  }
 
   .card-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.65rem;
   }
 
   .card-content {
+    h3,
+    h4,
+    h5 {
+      margin-bottom: 0.15rem;
+    }
     p {
-      margin-top: 0.35rem;
+      margin-top: 0.5rem;
     }
   }
 
@@ -83,7 +85,7 @@ const StyledCard = styled(Card)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0.55rem;
+    margin-top: 0.65rem;
     button {
       margin: 0rem 0.25rem;
     }

@@ -32,3 +32,14 @@ export const Button2 = styled.button`
         border: 1px solid gray;
       }
 `
+
+export const Select = styled.select`
+    min-width: 7.5rem;
+    border: none;
+    outline: none;
+    background: #fbfbfb;
+    color: #60666d;
+    border-radius: 0.25rem;
+    padding: 0.15rem 0.25rem;
+    
+`
