@@ -6,8 +6,8 @@ import GlobalStyle from './styles/GlobalStyle'
 import Login from './components/Login'
 import Nav from './components/Nav'
 import Dashboard from './components/Dashboard/Dashboard'
-import JobApplications from './components/JobApplications/JobApplications'
-import JobAppDetails from './components/JobApplications/JobAppDetails'
+import JobAppsList from './components/Applications/JobAppsList'
+import JobAppDetails from './components/Applications/JobAppDetails'
 import Favorites from './components/Favorites'
 import {getJobApps} from './actions/jobAppActions'
 import {getQuotes} from './actions/quoteActions'
@@ -17,6 +17,7 @@ function App() {
   const {user: {token} } = useSelector(state => state)
   const dispatch = useDispatch();
   const history = useHistory();  
+
     
   useEffect(() => {
     if (token) {
@@ -41,7 +42,7 @@ function App() {
       <Switch>
         <Route exact path='/' component={Login} />
         <Route exact path='/dashboard' component={Dashboard} />
-        <Route exact path='/job-apps' component={JobApplications} />
+        <Route exact path='/job-apps' component={JobAppsList} />
         <Route exact path='/job-apps/:id' component={JobAppDetails} />
         <Route exact path='/favorites' component={Favorites} />
       </Switch>

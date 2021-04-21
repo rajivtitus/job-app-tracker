@@ -61,19 +61,19 @@ const JobApplications = () => {
         <form onSubmit={handleSubmit(submitData)} autoComplete="off">
           <div className="row">
             <label htmlFor="job-title">Job Title:</label>
-            <input type="text" id="job-title" {...register("jobTitle")} required />
+            <input type="text" id="job-title" placeholder="Job Title" {...register("jobTitle")} required />
           </div>
           <div className="row">
             <label htmlFor="company-name">Company:</label>
-            <input type="text" id="company-name" {...register("companyName")} required />
+            <input type="text" id="company-name" placeholder="Company" {...register("companyName")} required />
           </div>
           <div className="row">
             <label htmlFor="location">Location:</label>
-            <input type="text" id="location" {...register("location")} required />
+            <input type="text" id="location" placeholder="Location" {...register("location")} required />
           </div>
           <div className="row">
             <label htmlFor="notes">Notes:</label>
-            <textarea id="notes" {...register("notes")} required />
+            <textarea id="notes" placeholder="Enter message here" {...register("notes")} required />
           </div>
           <div className="row btn-container">
             <Button1>Submit</Button1>
@@ -112,6 +112,7 @@ export default JobApplications;
 
 const StyledContainer = styled(Container)`
   display: flex;
+  justify-content: center;
   gap: 2rem;
 
   .form-card {
@@ -142,18 +143,35 @@ const StyledContainer = styled(Container)`
   .toolbar {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 1.5rem;
     margin-bottom: 2rem;
+    padding-bottom: 0.75rem;
     border-bottom: 1px solid #475360;
   }
-  .dropdown {
-    margin-bottom: 0.75rem;
+
+  @media (max-width: 980px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 3.5rem;
+
+    .job-apps-container {
+      padding: 1rem 0rem;
+    }
+  }
+
+  @media (max-width: 540px) {
+    padding: 2.5rem 1rem;
   }
 `;
 
 const StyledFormCard = styled(Card)`
   max-height: 45rem;
   max-width: 30rem;
+
+  @media (max-width: 980px) {
+    width: 100%;
+  }
 
   h2 {
     padding: 1rem 0rem;

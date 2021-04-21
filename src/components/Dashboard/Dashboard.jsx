@@ -141,7 +141,7 @@ const Dashboard = () => {
           <DoughnutChart chartData={totalAppsData} />
         </div>
       </Card>
-      <Card className="locations" variants={scaleIn}>
+      <Card className="graphs" variants={scaleIn}>
         <LineChart chartData={appsTimelineData} />
       </Card>
     </StyledContainer>
@@ -151,12 +151,6 @@ const Dashboard = () => {
 export default Dashboard;
 
 const StyledContainer = styled(Container)`
-  height: 100vh;
-  display: grid;
-  grid-template-columns: 2fr 3fr;
-  grid-template-rows: 2fr 3fr;
-  grid-gap: 1.5rem;
-
   .quotes {
     display: flex;
     flex-direction: column;
@@ -164,7 +158,7 @@ const StyledContainer = styled(Container)`
     justify-content: space-evenly;
     text-align: center;
     p {
-      padding: 0rem 1.5rem;
+      padding: 1rem 1.5rem;
     }
     .author {
       align-self: flex-end;
@@ -178,7 +172,18 @@ const StyledContainer = styled(Container)`
     justify-content: space-evenly;
   }
 
-  .locations {
-    grid-column: 1/3;
+  .graphs {
+  }
+
+  @media (max-width: 1176px) {
+    .quotes {
+      p {
+        padding: 1.25rem;
+      }
+    }
+
+    .charts {
+      flex-direction: column;
+    }
   }
 `;

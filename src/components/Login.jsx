@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 
 import { Container } from "../styles/styles";
 import video from "../assets/login page video.mp4";
+import logo from "../assets/logo.png";
 import { fadeIn } from "../animations/animations";
 import { loginUser, registerUser } from "../actions/userActions";
 
@@ -28,7 +29,10 @@ const Login = () => {
     reset();
   };
 
-  const switchMode = () => setIsRegister((prevIsRegister) => !prevIsRegister);
+  const switchMode = () => {
+    setIsRegister((prevIsRegister) => !prevIsRegister);
+    reset();
+  };
 
   return (
     <StyledLogin variants={fadeIn} initial="hidden" animate="show">
@@ -37,7 +41,10 @@ const Login = () => {
       </video>
       <StyledContainer>
         <header>
-          <h1 className="app-title">Transform Your Job Search</h1>
+          <h1 className="app-title">
+            <img src={logo} alt="app-logo" title="Jobase" />
+            Jobase | Transform Your Job Search
+          </h1>
         </header>
         <Glass>
           <form onSubmit={handleSubmit(submitFormData)}>
@@ -56,7 +63,7 @@ const Login = () => {
             )}
             <div className="form-row">
               <label htmlFor="email">Email:</label>
-              <input type="text" id="email" placeholder="Email" {...register("email")} required />
+              <input type="email" id="email" placeholder="Email" {...register("email")} required />
             </div>
             <div className="form-row">
               <label htmlFor="password">Password:</label>
@@ -118,13 +125,23 @@ const StyledContainer = styled(Container)`
   justify-content: space-evenly;
   background: rgba(0, 0, 0, 0.75);
   padding: 0;
+
+  @media (max-width: 736px) {
+    padding-top: 1.5rem;
+    padding-bottom: 5rem;
+  }
+
   .app-title {
     margin: 1rem 1rem 2.5rem 1rem;
     letter-spacing: 3px;
     text-shadow: 2px 2px black;
-    border-bottom: 1px solid white;
     color: white;
     text-align: center;
+    img {
+      height: 3.5rem;
+      width: 3.5rem;
+      margin-right: 0.75rem;
+    }
   }
 `;
 
@@ -140,7 +157,7 @@ const Glass = styled(motion.div)`
     text-align: center;
   }
   .form-row {
-    margin: 1.15rem 0rem;
+    margin: 0.75rem 0rem;
   }
   .error-message {
     text-align: center;

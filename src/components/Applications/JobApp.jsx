@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faBan, faTrash, faEllipsisH } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faBan, faTrash, faClock, faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -12,12 +12,19 @@ import { deleteJobApp, inactiveJobApp } from "../../actions/jobAppActions";
 
 const JobApp = ({ app }) => {
   const dispatch = useDispatch();
+  const today = moment(new Date());
+  //Checking whether app is greater than 3 days and outreach has been done?
+  const gtThreeDays = today.diff(moment(app.createdAt), "days") >= 3;
+  const outreach = app.outreach.length > 0;
 
   return (
     <>
       <StyledCard variants={fadeIn} initial="hidden" animate="show">
         <header className="card-header">
-          <h5>{moment(app.createdAt).fromNow()}</h5>
+          <h5>
+            <FontAwesomeIcon icon={faClock} color={gtThreeDays && !outreach && app.active ? "orange" : ""} />
+            {`${moment(app.createdAt).fromNow()} ${gtThreeDays && !outreach && app.active ? "| Outreach Pending" : ""}`}
+          </h5>
           <Link to={`job-apps/${app._id}`}>
             <FontAwesomeIcon icon={faEllipsisH} size="2x" color="black" />
           </Link>
@@ -44,7 +51,7 @@ const JobApp = ({ app }) => {
             {app.active && (
               <Button2 onClick={() => dispatch(inactiveJobApp(app._id))}>
                 <FontAwesomeIcon icon={faBan} color="red" />
-                Mark Inactive
+                Inactive
               </Button2>
             )}
             <Button2 onClick={() => dispatch(deleteJobApp(app._id))}>

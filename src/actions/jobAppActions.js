@@ -54,6 +54,16 @@ export const inactiveJobApp = (appId) => async (dispatch) => {
     }    
 }
 
-// export const updateJobApp = (appId, jobData) => async (dispatch) => {
+export const updateJobApp = (appId, activityData) => async (dispatch) => {
+    try {
+        const {data} = await updateJobAppURL(appId, activityData);
+        dispatch({
+            type: actionTypes.UPDATE_JOB_APP,
+            payload: data
+        })
+    }
+    catch(error){
+        console.log(error)
+    }    
+}
 
-// }

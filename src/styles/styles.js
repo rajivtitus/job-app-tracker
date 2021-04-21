@@ -6,13 +6,19 @@ export const Container = styled(motion.div)`
     width: 100%;
     padding: 2.5rem;
     padding-left: 16%;
+    @media (max-width: 1176px) {
+        padding: 2.5rem;
+    }
+
+    @media (max-width: 768px) {
+        padding: 2.5rem 1rem;
+    }
 `
 export const Card = styled(motion.div)`
     background: white;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
     border-radius: 0.5rem;
     padding: 1rem 1.5rem;
-    overflow: hidden;
 `
 
 export const Button1 = styled.button`
@@ -21,6 +27,10 @@ export const Button1 = styled.button`
     margin: 0.75rem 0rem;
     background: #323c47;
     color: white;
+    
+    @media (max-width: 768px) {
+        padding: 0.5rem 1rem;
+    }
 
 `
 

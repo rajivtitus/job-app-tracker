@@ -12,7 +12,7 @@ API.interceptors.request.use(req => {
 export const getJobAppsURL = () => API.get("/job-apps");
 export const createJobAppURL = (newJobApp) => API.post("/job-apps", newJobApp);
 export const deleteJobAppURL = (id) => API.delete(`/job-apps/${id}`);
-export const updateJobAppURL = (id, jobData) => API.patch(`/job-apps/${id}`, jobData);
+export const updateJobAppURL = (id, activityData) => API.patch(`/job-apps/${id}`, activityData);
 export const inactiveJobAppURL = (id) => API.patch(`/job-apps/inactive/${id}`);
 
 export const registerURL = (formData) => API.post("/user/register", formData);

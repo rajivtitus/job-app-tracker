@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,7 @@ import logo from "../assets/logo.png";
 
 const Nav = () => {
   const { pathname } = useLocation();
+  const [navMenuStatus, setNavMenuStatus] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -21,29 +22,45 @@ const Nav = () => {
     history.push("/");
   };
 
+  const navMenuHandler = () => {
+    setNavMenuStatus((prevNavMenuStatus) => !prevNavMenuStatus);
+  };
+
   return (
     <>
       {pathname !== "/" && (
         <StyledNav>
           <div className="logo">
-            <img src={logo} alt="app-logo" title="Job Trak" />
-            <h1>Job Traꓘ</h1>
+            <img src={logo} alt="app-logo" title="Jobase" />
+            <h1>Jobase</h1>
           </div>
-          <ul>
+          <ul className={`${navMenuStatus ? "nav-open" : ""}`}>
             <li>
-              <Link className={`link ${pathname === "/dashboard" ? "active" : ""}`} to="/dashboard">
+              <Link
+                className={`link ${pathname === "/dashboard" ? "active" : ""}`}
+                to="/dashboard"
+                onClick={navMenuHandler}
+              >
                 <FontAwesomeIcon icon={faChartLine} />
                 Dashboard
               </Link>
             </li>
             <li>
-              <Link className={`link ${pathname === "/job-apps" ? "active" : ""}`} to="/job-apps">
+              <Link
+                className={`link ${pathname === "/job-apps" ? "active" : ""}`}
+                to="/job-apps"
+                onClick={navMenuHandler}
+              >
                 <FontAwesomeIcon icon={faListAlt} />
                 Applications
               </Link>
             </li>
             <li>
-              <Link className={`link ${pathname === "/favorites" ? "active" : ""}`} to="/favorites">
+              <Link
+                className={`link ${pathname === "/favorites" ? "active" : ""}`}
+                to="/favorites"
+                onClick={navMenuHandler}
+              >
                 <FontAwesomeIcon icon={faStar} />
                 Favorites
               </Link>
@@ -55,6 +72,11 @@ const Nav = () => {
               </button>
             </li>
           </ul>
+          <div onClick={navMenuHandler} className="nav-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         </StyledNav>
       )}
     </>
@@ -80,6 +102,7 @@ const StyledNav = styled(motion.nav)`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-top: 1rem;
     img {
       height: 2.5rem;
       width: 2.5rem;
@@ -122,6 +145,75 @@ const StyledNav = styled(motion.nav)`
 
   .logout-btn {
     background: none;
+  }
+
+  .nav-menu {
+    pointer-events: none;
+  }
+
+  @media (max-width: 1176px) {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    height: 10vh;
+    width: 100%;
+
+    .logo {
+      flex-direction: row;
+      padding: 0rem 1.5rem;
+      z-index: 4;
+      img {
+        margin-right: 0.5rem;
+      }
+    }
+
+    ul {
+      height: 100vh;
+      width: 35%;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 110%;
+      padding-top: 2.5rem;
+      background: linear-gradient(315deg, #485461 0%, #28313b 74%);
+      transition: all 0.75s ease-out;
+      z-index: 3;
+    }
+
+    .link {
+      font-size: 2.5rem;
+      svg {
+        margin-right: 0.85rem;
+      }
+    }
+
+    //Toggle Nav bar on and off
+    .nav-menu {
+      cursor: pointer;
+      position: relative;
+      pointer-events: all;
+      z-index: 3;
+      div {
+        width: 3.5rem;
+        height: 0.35rem;
+        margin: 0.65rem;
+        background: white;
+      }
+    }
+    .nav-open {
+      left: 65%;
+      transition: all 0.75s ease-out;
+    }
+  }
+
+  @media (max-width: 765px) {
+    ul {
+      width: 100%;
+    }
+    .nav-open {
+      left: 0%;
+      transition: all 0.75s ease-out;
+    }
   }
 `;
 

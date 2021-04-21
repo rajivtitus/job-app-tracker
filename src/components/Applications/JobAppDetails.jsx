@@ -1,37 +1,40 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faBan, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 
+import ActivityList from "./ActivityList";
 import { Button1, Button2, Container, Card, Select } from "../../styles/styles";
 import { fadeIn } from "../../animations/animations";
+import { updateJobApp } from "../../actions/jobAppActions";
 
 const JobAppDetails = () => {
   const { pathname } = useLocation();
   const jobId = pathname.split("/")[2];
-  const jobDetails = useSelector((state) => state.jobApps.filter((jobApp) => jobApp._id === jobId))[0];
+  const jobApp = useSelector((state) => state.jobApps.filter((jobApp) => jobApp._id === jobId))[0];
   const [logCall, setLogCall] = useState(false);
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
 
   const submitData = (activityData) => {
-    // dispatch(createJobApp(activityData));
+    dispatch(updateJobApp(jobId, activityData));
     reset();
   };
 
   return (
     <StyledContainer>
-      {jobDetails && (
+      {jobApp && (
         <StyledCard>
           <div className="card-header">
             <Link to="/job-apps">
               <Button2>Go Back</Button2>
             </Link>
-            {jobDetails.active ? (
+            {jobApp.active ? (
               <h5>
                 <FontAwesomeIcon icon={faCheck} color="green" />
                 Active
@@ -44,16 +47,18 @@ const JobAppDetails = () => {
             )}
           </div>
           <div className="card-content">
-            <h2>{jobDetails.jobTitle}</h2>
-            <h3>{jobDetails.companyName}</h3>
-            <h4>{jobDetails.location}</h4>
-            <p>{jobDetails.notes}</p>
+            <h2>{jobApp.jobTitle}</h2>
+            <h3>{jobApp.companyName}</h3>
+            <h5>{jobApp.location}</h5>
+            <h5>Date Applied: {moment(jobApp.createdAt).format("YYYY-MM-DD")}</h5>
+            <p>{jobApp.notes}</p>
+            <div className="current-activities">
+              <ActivityList outreach={jobApp.outreach} />
+            </div>
           </div>
           <div className="card-actions">
-            {!logCall && (
-              <Button1 disabled={!jobDetails.active} onClick={() => setLogCall((prevState) => !prevState)}>
-                Log Activity
-              </Button1>
+            {!logCall && jobApp.active && (
+              <Button1 onClick={() => setLogCall((prevState) => !prevState)}>Log Activity</Button1>
             )}
 
             {logCall && (
@@ -119,6 +124,10 @@ const StyledCard = styled(Card)`
     }
   }
 
+  .current-activities {
+    margin: 1rem 0rem;
+  }
+
   .card-actions {
     display: flex;
     justify-content: center;
@@ -126,12 +135,12 @@ const StyledCard = styled(Card)`
   }
 
   .log-activity {
-    width: 75%;
+    width: 90%;
     position: relative;
     text-align: center;
     textarea {
-      width: 30rem;
-      height: 10rem;
+      width: 22.5rem;
+      height: 12.5rem;
       border: 1px solid black;
       resize: none;
     }
@@ -155,5 +164,17 @@ const StyledCard = styled(Card)`
     position: absolute;
     top: 0;
     right: 0;
+  }
+
+  @media (max-width: 536px) {
+    height: 90vh;
+    width: 100%;
+    .row {
+      flex-direction: column;
+      gap: 1.5rem;
+      textarea {
+        width: 20rem;
+      }
+    }
   }
 `;
