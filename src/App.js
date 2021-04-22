@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {Switch, Route, useHistory} from 'react-router-dom'
+import {Switch, Route, BrowserRouter} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 
 import GlobalStyle from './styles/GlobalStyle'
@@ -12,11 +12,11 @@ import Favorites from './components/Favorites'
 import {getJobApps} from './actions/jobAppActions'
 import {getQuotes} from './actions/quoteActions'
 import * as actionTypes from './constants/actionTypes'
+import GuardedRoute from './components/GuardedRoute'
 
 function App() {
   const {user: {token} } = useSelector(state => state)
   const dispatch = useDispatch();
-  const history = useHistory();  
 
     
   useEffect(() => {
@@ -29,24 +29,22 @@ function App() {
         type: actionTypes.SET_USER
       })
     } 
-    else {
-      history.push('/')
-    }
+
   }, [token, dispatch])
 
 
   return (
-    <>
+    <BrowserRouter>
       <GlobalStyle />
-      <Nav />
+      <GuardedRoute component={Nav} authToken={token}/>
       <Switch>
         <Route exact path='/' component={Login} />
-        <Route exact path='/dashboard' component={Dashboard} />
-        <Route exact path='/job-apps' component={JobAppsList} />
-        <Route exact path='/job-apps/:id' component={JobAppDetails} />
-        <Route exact path='/favorites' component={Favorites} />
+        <GuardedRoute exact path='/dashboard' component={Dashboard} authToken={token}/>
+        <GuardedRoute exact path='/job-apps' component={JobAppsList}  authToken={token}/>
+        <GuardedRoute exact path='/job-apps/:id' component={JobAppDetails}  authToken={token}/>
+        <GuardedRoute exact path='/favorites' component={Favorites} authToken={token}/>
       </Switch>
-    </>
+    </BrowserRouter>
   );
 }
 

@@ -195,8 +195,8 @@ const StyledNav = styled(motion.nav)`
       z-index: 3;
       div {
         width: 3.5rem;
-        height: 0.35rem;
-        margin: 0.65rem;
+        height: 0.25rem;
+        margin: 0.5rem;
         background: white;
       }
     }

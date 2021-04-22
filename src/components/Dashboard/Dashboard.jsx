@@ -124,6 +124,7 @@ const Dashboard = () => {
     appsTodayChartData(jobApps);
     totalAppsChartData(jobApps);
     appsTimelineChartData(jobApps, profile);
+    //eslint-disable-next-line
   }, [jobApps, profile]);
 
   return (
@@ -151,6 +152,11 @@ const Dashboard = () => {
 export default Dashboard;
 
 const StyledContainer = styled(Container)`
+  display: grid;
+  grid-gap: 1.5rem;
+  grid-template-columns: 2fr 3fr;
+  grid-template-rows: 2fr 3fr;
+
   .quotes {
     display: flex;
     flex-direction: column;
@@ -173,17 +179,36 @@ const StyledContainer = styled(Container)`
   }
 
   .graphs {
+    grid-column: 1/3;
   }
 
   @media (max-width: 1176px) {
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
+
     .quotes {
+      grid-row: 1/2;
       p {
         padding: 1.25rem;
       }
     }
 
     .charts {
+      grid-row: 2/4;
+    }
+
+    .graphs {
+      grid-column: 1;
+      grid-row: 4/5;
+    }
+  }
+
+  @media (max-width: 735px) {
+    .charts {
       flex-direction: column;
+      div {
+        flex: 1;
+      }
     }
   }
 `;

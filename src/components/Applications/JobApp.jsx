@@ -14,7 +14,7 @@ const JobApp = ({ app }) => {
   const dispatch = useDispatch();
   const today = moment(new Date());
   //Checking whether app is greater than 3 days and outreach has been done?
-  const gtThreeDays = today.diff(moment(app.createdAt), "days") >= 3;
+  const gtThreeDays = Math.round(today.diff(moment(app.createdAt), "days")) >= 3;
   const outreach = app.outreach.length > 0;
 
   return (

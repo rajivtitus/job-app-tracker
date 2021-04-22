@@ -25,15 +25,6 @@ const userReducer = (state = defaultState, action) => {
                 ...state,
                 ...JSON.parse(localStorage.getItem('user'))
             }
-
-        case actionTypes.LOGOUT_USER:
-            localStorage.clear();
-            return {
-                login: {
-                    hasError: false,
-                    errorMsg: "",
-                },
-            }
         
         case actionTypes.HAS_ERROR:
             return {

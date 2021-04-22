@@ -25,17 +25,20 @@ const ActivityList = ({ outreach }) => {
       case "other":
         others.push(item);
         break;
+
+      default:
+        break;
     }
   });
 
   return (
     <StyledActivityList>
       <h3>Outreach Activites ({outreach.length})</h3>
-      <AnimateSharedLayout type="switch">
+      <AnimateSharedLayout type="crossfade">
         {calls.length ? (
           <Toggle title={`Call (${calls.length})`}>
             {calls.map((call, index) => (
-              <div key={index}>
+              <div key={index} className="activity">
                 <h5>Call {index + 1}:</h5>
                 <p>{call.message}</p>
               </div>
@@ -46,7 +49,7 @@ const ActivityList = ({ outreach }) => {
         {emails.length ? (
           <Toggle title={`Email (${emails.length})`}>
             {emails.map((email, index) => (
-              <div key={index}>
+              <div key={index} className="activity">
                 <h5>Email {index + 1}:</h5>
                 <p>{email.message}</p>
               </div>
@@ -57,7 +60,7 @@ const ActivityList = ({ outreach }) => {
         {linkedin.length ? (
           <Toggle title={`LinkedIn Mail (${linkedin.length})`}>
             {linkedin.map((item, index) => (
-              <div key={index}>
+              <div key={index} className="activity">
                 <h5>Mail {index + 1}:</h5>
                 <p>{item.message}</p>
               </div>
@@ -68,7 +71,7 @@ const ActivityList = ({ outreach }) => {
         {others.length ? (
           <Toggle title={`Other (${others.length})`}>
             {others.map((other, index) => (
-              <div key={index}>
+              <div key={index} className="activity">
                 <h5>Other {index + 1}:</h5>
                 <p>{other.message}</p>
               </div>
@@ -92,6 +95,13 @@ const StyledActivityList = styled(motion.div)`
     h4 {
       padding: 0.5rem 0rem;
       font-weight: 600;
+    }
+  }
+
+  .activity {
+    margin: 1.25rem 0rem;
+    p {
+      margin: 0;
     }
   }
 
