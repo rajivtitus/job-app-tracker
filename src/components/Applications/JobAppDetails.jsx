@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { motion } from "framer-motion";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faBan, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from "react-router-dom";
+import { faCheck, faBan, faTrash, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useLocation, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 
 import ActivityList from "./ActivityList";
 import { Button1, Button2, Container, Card, Select } from "../../styles/styles";
 import { fadeIn } from "../../animations/animations";
-import { updateJobApp } from "../../actions/jobAppActions";
+import { updateJobApp, deleteJobApp, inactiveJobApp } from "../../actions/jobAppActions";
 
 const JobAppDetails = () => {
   const { pathname } = useLocation();
+  const history = useHistory();
   const jobId = pathname.split("/")[2];
   const jobApp = useSelector((state) => state.jobApps.filter((jobApp) => jobApp._id === jobId))[0];
   const [logCall, setLogCall] = useState(false);
@@ -27,13 +27,11 @@ const JobAppDetails = () => {
   };
 
   return (
-    <StyledContainer>
+    <StyledContainer variants={fadeIn} initial="hidden" animate="show">
       {jobApp && (
         <StyledCard>
           <div className="card-header">
-            <Link to="/job-apps">
-              <Button2>Go Back</Button2>
-            </Link>
+            <Button2 onClick={() => history.push("/job-apps")}>Go Back</Button2>
             {jobApp.active ? (
               <h5>
                 <FontAwesomeIcon icon={faCheck} color="green" />
@@ -52,40 +50,59 @@ const JobAppDetails = () => {
             <h5>{jobApp.location}</h5>
             <h5>Date Applied: {moment(jobApp.createdAt).format("YYYY-MM-DD")}</h5>
             <p>{jobApp.notes}</p>
+          </div>
+          <div className="card-actions">
+            {jobApp.active && (
+              <Button2 onClick={() => dispatch(inactiveJobApp(jobApp._id))}>
+                <FontAwesomeIcon icon={faBan} color="red" />
+                Inactive
+              </Button2>
+            )}
+            <Button2
+              onClick={() => {
+                dispatch(deleteJobApp(jobApp._id));
+                history.push("/job-apps");
+              }}
+            >
+              <FontAwesomeIcon icon={faTrash} color="black" />
+              Delete
+            </Button2>
+          </div>
+          <div className="activity-container">
             <div className="current-activities">
               <ActivityList outreach={jobApp.outreach} />
             </div>
-          </div>
-          <div className="card-actions">
-            {!logCall && jobApp.active && (
-              <Button1 onClick={() => setLogCall((prevState) => !prevState)}>Log Activity</Button1>
-            )}
+            <div className="log-activity">
+              {!logCall && jobApp.active && (
+                <Button1 onClick={() => setLogCall((prevState) => !prevState)}>Log Activity</Button1>
+              )}
 
-            {logCall && (
-              <motion.div className="log-activity" variants={fadeIn} initial="hidden" animate="show">
-                <Button2 className="close-btn" onClick={() => setLogCall((prevState) => !prevState)}>
-                  <FontAwesomeIcon icon={faTimes} />
-                </Button2>
-                <form onSubmit={handleSubmit(submitData)} autoComplete="off">
-                  <div className="row">
-                    <div className="column">
-                      <label htmlFor="activity">Activity Type:</label>
-                      <Select name="activity" id="activity" {...register("activityType")}>
-                        <option value="call">Call</option>
-                        <option value="email">Email</option>
-                        <option value="linkedin">LinkedIn</option>
-                        <option value="other">Other</option>
-                      </Select>
+              {logCall && (
+                <>
+                  <Button2 className="close-btn" onClick={() => setLogCall((prevState) => !prevState)}>
+                    <FontAwesomeIcon icon={faTimes} />
+                  </Button2>
+                  <form onSubmit={handleSubmit(submitData)} autoComplete="off">
+                    <div className="row">
+                      <div className="column">
+                        <label htmlFor="activity">Activity Type:</label>
+                        <Select name="activity" id="activity" {...register("activityType")}>
+                          <option value="call">Call</option>
+                          <option value="email">Email</option>
+                          <option value="linkedin">LinkedIn</option>
+                          <option value="other">Other</option>
+                        </Select>
+                      </div>
+                      <div className="column">
+                        <label>Comments:</label>
+                        <textarea placeholder="Enter message here" {...register("message")} required />
+                      </div>
                     </div>
-                    <div className="column">
-                      <label>Comments:</label>
-                      <textarea placeholder="Enter message here" {...register("message")} required />
-                    </div>
-                  </div>
-                  <Button1 type="submit">Log</Button1>
-                </form>
-              </motion.div>
-            )}
+                    <Button1 type="submit">Log</Button1>
+                  </form>
+                </>
+              )}
+            </div>
           </div>
         </StyledCard>
       )}
@@ -124,18 +141,22 @@ const StyledCard = styled(Card)`
     }
   }
 
-  .current-activities {
-    margin: 1rem 0rem;
-  }
-
   .card-actions {
     display: flex;
-    justify-content: center;
-    margin-top: 1.5rem;
+    justify-content: flex-end;
+    margin-top: 1.25rem;
+    button {
+      margin: 0rem 0.5rem;
+    }
+  }
+
+  .activity-container {
+    margin: 1.5rem 0rem;
   }
 
   .log-activity {
     width: 90%;
+    margin: 2.5rem auto;
     position: relative;
     text-align: center;
     textarea {
@@ -148,7 +169,7 @@ const StyledCard = styled(Card)`
   .row {
     display: flex;
     justify-content: space-evenly;
-    padding: 3.5rem 0rem;
+    padding: 3.5rem 1rem;
     text-align: left;
     label {
       display: block;
@@ -158,8 +179,8 @@ const StyledCard = styled(Card)`
       border: 1px solid black;
     }
   }
-
   .close-btn {
+    border: none;
     background: none;
     position: absolute;
     top: 0;

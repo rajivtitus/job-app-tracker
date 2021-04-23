@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faBan, faTrash, faClock, faEllipsisH } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faBan, faClock, faEllipsisH, faStar } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { Card, Button2 } from "../../styles/styles";
 import { fadeIn } from "../../animations/animations";
-import { deleteJobApp, inactiveJobApp } from "../../actions/jobAppActions";
+import { favoriteJobApp } from "../../actions/jobAppActions";
 
 const JobApp = ({ app }) => {
   const dispatch = useDispatch();
@@ -18,50 +18,44 @@ const JobApp = ({ app }) => {
   const outreach = app.outreach.length > 0;
 
   return (
-    <>
-      <StyledCard variants={fadeIn} initial="hidden" animate="show">
-        <header className="card-header">
+    <StyledCard variants={fadeIn} initial="hidden" animate="show">
+      <header className="card-header">
+        <h5>
+          <FontAwesomeIcon icon={faClock} color={gtThreeDays && !outreach && app.active ? "#4B7EC0" : ""} />
+          {`${moment(app.createdAt).fromNow()} ${gtThreeDays && !outreach && app.active ? "| Outreach Pending" : ""}`}
+        </h5>
+        <Link to={`job-apps/${app._id}`}>
+          <FontAwesomeIcon icon={faEllipsisH} size="2x" color="black" />
+        </Link>
+      </header>
+      <div className="card-content">
+        <h3>{app.jobTitle}</h3>
+        <h4>{app.companyName}</h4>
+        <h5>{app.location}</h5>
+        <p>{app.notes.length > 200 ? `${app.notes.substring(0, 150)}....` : app.notes}</p>
+      </div>
+      <div className="card-footer">
+        {app.active ? (
           <h5>
-            <FontAwesomeIcon icon={faClock} color={gtThreeDays && !outreach && app.active ? "orange" : ""} />
-            {`${moment(app.createdAt).fromNow()} ${gtThreeDays && !outreach && app.active ? "| Outreach Pending" : ""}`}
+            <FontAwesomeIcon icon={faCheck} color="green" />
+            Active
           </h5>
-          <Link to={`job-apps/${app._id}`}>
-            <FontAwesomeIcon icon={faEllipsisH} size="2x" color="black" />
-          </Link>
-        </header>
-        <div className="card-content">
-          <h3>{app.jobTitle}</h3>
-          <h4>{app.companyName}</h4>
-          <h5>{app.location}</h5>
-          <p>{app.notes.length > 200 ? `${app.notes.substring(0, 150)}....` : app.notes}</p>
-        </div>
-        <div className="card-footer">
-          {app.active ? (
-            <h5>
-              <FontAwesomeIcon icon={faCheck} color="green" />
-              Active
-            </h5>
-          ) : (
-            <h5>
-              <FontAwesomeIcon icon={faBan} color="Red" />
-              Inactive
-            </h5>
-          )}
-          <div className="card-actions">
-            {app.active && (
-              <Button2 onClick={() => dispatch(inactiveJobApp(app._id))}>
-                <FontAwesomeIcon icon={faBan} color="red" />
-                Inactive
-              </Button2>
-            )}
-            <Button2 onClick={() => dispatch(deleteJobApp(app._id))}>
-              <FontAwesomeIcon icon={faTrash} color="black" />
-              Delete
+        ) : (
+          <h5>
+            <FontAwesomeIcon icon={faBan} color="Red" />
+            Inactive
+          </h5>
+        )}
+        <div className="card-actions">
+          {app.active && (
+            <Button2 onClick={() => dispatch(favoriteJobApp(app._id))}>
+              <FontAwesomeIcon icon={faStar} color={app.favorite ? "orange" : "#323c47"} />
+              Favorite
             </Button2>
-          </div>
+          )}
         </div>
-      </StyledCard>
-    </>
+      </div>
+    </StyledCard>
   );
 };
 
@@ -94,7 +88,7 @@ const StyledCard = styled(Card)`
     align-items: center;
     margin-top: 0.65rem;
     button {
-      margin: 0rem 0.25rem;
+      border: none;
     }
   }
 `;

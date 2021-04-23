@@ -13,6 +13,7 @@ const jobAppsReducer = (state = [], action) => {
 
         case actionTypes.UPDATE_JOB_APP:
         case actionTypes.INACTIVE_JOB_APP:
+        case actionTypes.FAVORITE_JOB_APP:
             return state.map(app => app._id === action.payload._id ? action.payload : app)
 
         default:

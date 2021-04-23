@@ -1,5 +1,5 @@
 import * as actionTypes from '../constants/actionTypes'
-import {getJobAppsURL, createJobAppURL, deleteJobAppURL, updateJobAppURL, inactiveJobAppURL} from '../api'
+import {getJobAppsURL, createJobAppURL, deleteJobAppURL, updateJobAppURL, inactiveJobAppURL, favoriteJobAppURL} from '../api'
 
 
 export const getJobApps = () => async (dispatch) => {
@@ -67,3 +67,15 @@ export const updateJobApp = (appId, activityData) => async (dispatch) => {
     }    
 }
 
+export const favoriteJobApp = (appId) => async (dispatch) => {
+    try {
+        const {data} = await favoriteJobAppURL(appId);
+        dispatch({
+            type: actionTypes.FAVORITE_JOB_APP,
+            payload: data
+        })
+    }
+    catch(error){
+        console.log(error)
+    }    
+}

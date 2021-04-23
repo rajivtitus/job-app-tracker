@@ -37,9 +37,9 @@ export const Button1 = styled.button`
 export const Button2 = styled.button`
     padding: 0.75rem;
     background: none;
-    border: 1px solid transparent;
+    border: 1px solid gray;
     &:hover {
-        border: 1px solid gray;
+        border: 1px solid black;
       }
 `
 

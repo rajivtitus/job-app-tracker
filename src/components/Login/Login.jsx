@@ -7,15 +7,17 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { Container } from "../styles/styles";
-import video from "../assets/login page video.mp4";
-import logo from "../assets/logo.png";
-import { fadeIn } from "../animations/animations";
-import { loginUser, registerUser } from "../actions/userActions";
+import { Container } from "../../styles/styles";
+import video from "../../assets/login page video.mp4";
+import logo from "../../assets/logo.png";
+import { fadeIn } from "../../animations/animations";
+import { loginUser, registerUser } from "../../actions/userActions";
+// import About from "./About";
 
 const Login = () => {
   const { login } = useSelector((state) => state.user);
   const [isRegister, setIsRegister] = useState(false);
+  // const [showAbout, setShowAbout] = useState(true);
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -36,6 +38,7 @@ const Login = () => {
 
   return (
     <StyledLogin variants={fadeIn} initial="hidden" animate="show">
+      {/* {showAbout && <About />} */}
       <video className="home-video" autoPlay muted loop>
         <source src={video} type="video/mp4" />
       </video>

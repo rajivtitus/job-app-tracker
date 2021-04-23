@@ -108,11 +108,12 @@ const Dashboard = () => {
 
   //Function to calculate apps-per-day
   const getAppsPerDay = (appsList, targetDate) => {
+    console.log();
     //Filtering through list to compare job app dates with target date
     const appsPerDay = appsList.filter((app) => {
       let appDate = new Date(app.createdAt);
       return (
-        targetDate.getDay() === appDate.getDay() &&
+        targetDate.getDate() === appDate.getDate() &&
         targetDate.getMonth() === appDate.getMonth() &&
         targetDate.getFullYear() === appDate.getFullYear()
       );

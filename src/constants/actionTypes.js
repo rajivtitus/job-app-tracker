@@ -3,6 +3,7 @@ export const CREATE_JOB_APP = 'CREATE_JOB_APP'
 export const DELETE_JOB_APP = 'DELETE_JOB_APP'
 export const INACTIVE_JOB_APP = 'INACTIVE_JOB_APP'
 export const UPDATE_JOB_APP = 'UPDATE_JOB_APP'
+export const FAVORITE_JOB_APP = 'FAVORITE_JOB_APP'
 
 export const GET_QUOTES = 'GET_QUOTES';
 
