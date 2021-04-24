@@ -12,12 +12,12 @@ import video from "../../assets/login page video.mp4";
 import logo from "../../assets/logo.png";
 import { fadeIn } from "../../animations/animations";
 import { loginUser, registerUser } from "../../actions/userActions";
-// import About from "./About";
+import About from "./About";
 
 const Login = () => {
   const { login } = useSelector((state) => state.user);
   const [isRegister, setIsRegister] = useState(false);
-  // const [showAbout, setShowAbout] = useState(true);
+  const [showAbout, setShowAbout] = useState(false);
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -38,16 +38,17 @@ const Login = () => {
 
   return (
     <StyledLogin variants={fadeIn} initial="hidden" animate="show">
-      {/* {showAbout && <About />} */}
+      <button onClick={() => setShowAbout((prevshowAbout) => !prevshowAbout)} className="about-btn">
+        {!showAbout ? "About Me" : "X"}
+      </button>
+      {showAbout && <About />}
       <video className="home-video" autoPlay muted loop>
         <source src={video} type="video/mp4" />
       </video>
       <StyledContainer>
         <header>
-          <h1 className="app-title">
-            <img src={logo} alt="app-logo" title="Jobase" />
-            Jobase | Transform Your Job Search
-          </h1>
+          <img src={logo} alt="app-logo" title="Jobase" />
+          <h1 className="app-title">Jobase | Transform Your Job Search</h1>
         </header>
         <Glass>
           <form onSubmit={handleSubmit(submitFormData)}>
@@ -114,36 +115,49 @@ const StyledLogin = styled(motion.div)`
     object-fit: cover;
     position: fixed;
     top: 0;
-    left: 0;
     z-index: -1;
+  }
+  .about-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.5rem 1.5rem;
+    font-size: 2.5rem;
+    background: none;
+    color: white;
+    z-index: 5;
   }
 `;
 
 const StyledContainer = styled(Container)`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(5px);
   flex-direction: column;
+  align-items: center;
   justify-content: space-evenly;
+  backdrop-filter: blur(5px);
   background: rgba(0, 0, 0, 0.75);
   padding: 0;
 
   @media (max-width: 736px) {
-    padding-top: 1.5rem;
+    padding-top: 5rem;
     padding-bottom: 5rem;
   }
 
-  .app-title {
-    margin: 1rem 1rem 2.5rem 1rem;
-    letter-spacing: 3px;
-    text-shadow: 2px 2px black;
-    color: white;
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 1rem 2rem 1rem;
     text-align: center;
+    h1 {
+      letter-spacing: 3px;
+      text-shadow: 2px 2px black;
+      color: white;
+    }
     img {
-      height: 3.5rem;
-      width: 3.5rem;
-      margin-right: 0.75rem;
+      height: 5rem;
+      width: 5rem;
+      margin-bottom: 1.5rem;
     }
   }
 `;

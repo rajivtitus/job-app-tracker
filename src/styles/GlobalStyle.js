@@ -20,6 +20,21 @@ html {
       font-size: 78%;
     }
 
+    ::-webkit-scrollbar {
+      width: 10px;
+      }
+    ::-webkit-scrollbar-thumb {
+      background: #6a7a8b;
+      border-radius: 5px;
+      &:hover {
+        background: #475360;
+        }
+      }
+    ::-webkit-scrollbar-track {
+      background: white;
+      border-radius: 5px;
+      }
+
     body {
         font-family: 'Roboto', sans-serif;
         background-color: #f3e6e8;

@@ -31,7 +31,7 @@ const JobAppDetails = () => {
       {jobApp && (
         <StyledCard>
           <div className="card-header">
-            <Button2 onClick={() => history.push("/job-apps")}>Go Back</Button2>
+            <Button2 onClick={() => history.goBack()}>Go Back</Button2>
             {jobApp.active ? (
               <h5>
                 <FontAwesomeIcon icon={faCheck} color="green" />
@@ -61,7 +61,7 @@ const JobAppDetails = () => {
             <Button2
               onClick={() => {
                 dispatch(deleteJobApp(jobApp._id));
-                history.push("/job-apps");
+                history.goBack();
               }}
             >
               <FontAwesomeIcon icon={faTrash} color="black" />

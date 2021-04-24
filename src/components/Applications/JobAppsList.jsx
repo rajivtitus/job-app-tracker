@@ -8,51 +8,55 @@ import { Button1, Container, Card, Select } from "../../styles/styles";
 import { fadeIn } from "../../animations/animations";
 import { createJobApp } from "../../actions/jobAppActions";
 import JobApp from "./JobApp";
+//Using custom hook to persist sort and filter selections in local storage
+import useStickyState from "./stickyState";
 
 const JobApplications = () => {
   const { jobApps } = useSelector((state) => state);
-  const [filterType, setFilterType] = useState("none");
-  const [sortType, setSortType] = useState("recent");
+  const [filter, setFilter] = useStickyState("none", "filterType");
+  const [sort, setSort] = useStickyState("recent", "sortType");
   const [filteredJobApps, setFilteredJobApps] = useState([]);
   const [sortedJobApps, setSortedJobApps] = useState([]);
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
+
+  console.log(filter);
 
   const submitData = (jobData) => {
     dispatch(createJobApp(jobData));
     reset();
   };
 
-  const filterJobApps = (filterType, jobApps) => {
-    if (filterType === "none") {
+  const filterJobApps = (filter, jobApps) => {
+    if (filter === "none") {
       const allApps = [...jobApps];
       setFilteredJobApps(allApps);
-    } else if (filterType === "active") {
+    } else if (filter === "active") {
       const activeApps = jobApps.filter((app) => app.active);
       setFilteredJobApps(activeApps);
-    } else if (filterType === "inactive") {
+    } else if (filter === "inactive") {
       const inactiveApps = jobApps.filter((app) => !app.active);
       setFilteredJobApps(inactiveApps);
     }
   };
 
-  const sortJobApps = (sortType, filteredJobApps) => {
-    if (sortType === "recent") {
+  const sortJobApps = (sort, filteredJobApps) => {
+    if (sort === "recent") {
       const recentApps = [...filteredJobApps].sort((app1, app2) => moment(app2.createdAt) - moment(app1.createdAt));
       setSortedJobApps(recentApps);
-    } else if (sortType === "older") {
+    } else if (sort === "older") {
       const olderApps = [...filteredJobApps].sort((app1, app2) => moment(app1.createdAt) - moment(app2.createdAt));
       setSortedJobApps(olderApps);
     }
   };
 
   useEffect(() => {
-    filterJobApps(filterType, jobApps);
-  }, [filterType, jobApps]);
+    filterJobApps(filter, jobApps);
+  }, [filter, jobApps]);
 
   useEffect(() => {
-    sortJobApps(sortType, filteredJobApps);
-  }, [sortType, filteredJobApps]);
+    sortJobApps(sort, filteredJobApps);
+  }, [sort, filteredJobApps]);
 
   return (
     <StyledContainer variants={fadeIn} initial="hidden" animate="show">
@@ -84,14 +88,14 @@ const JobApplications = () => {
         <div className="toolbar">
           <div className="dropdown">
             <label htmlFor="sort">Sort: </label>
-            <Select name="sort" id="sort" onChange={(e) => setSortType(e.target.value)}>
+            <Select name="sort" id="sort" value={sort} onChange={(e) => setSort(e.target.value)}>
               <option value="recent">Recent</option>
               <option value="older">Older</option>
             </Select>
           </div>
           <div className="dropdown">
             <label htmlFor="filter">Filter: </label>
-            <Select name="filter" id="filter" onChange={(e) => setFilterType(e.target.value)}>
+            <Select name="filter" value={filter} id="filter" onChange={(e) => setFilter(e.target.value)}>
               <option value="none">None</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
