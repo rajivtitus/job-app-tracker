@@ -123,6 +123,21 @@ const StyledCard = styled(Card)`
   height: 75vh;
   overflow-y: auto;
 
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #6a7a8b;
+    border-radius: 5px;
+    &:hover {
+      background: #475360;
+    }
+  }
+  ::-webkit-scrollbar-track {
+    background: white;
+    border-radius: 5px;
+  }
+
   .card-header {
     display: flex;
     justify-content: space-between;

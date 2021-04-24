@@ -137,6 +137,8 @@ const StyledContainer = styled(Container)`
   backdrop-filter: blur(5px);
   background: rgba(0, 0, 0, 0.75);
   padding: 0;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 
   @media (max-width: 736px) {
     padding-top: 5rem;
@@ -157,7 +159,7 @@ const StyledContainer = styled(Container)`
     img {
       height: 5rem;
       width: 5rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
   }
 `;
