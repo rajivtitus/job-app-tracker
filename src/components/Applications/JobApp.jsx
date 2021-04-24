@@ -64,6 +64,7 @@ export default JobApp;
 const StyledCard = styled(Card)`
   min-height: 15vh;
   margin-bottom: 2rem;
+  word-break: break-all;
 
   .card-header {
     display: flex;

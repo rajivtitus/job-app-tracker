@@ -121,6 +121,7 @@ const StyledContainer = styled(Container)`
 const StyledCard = styled(Card)`
   width: 75%;
   height: 75vh;
+  word-break: break-all;
   overflow-y: auto;
 
   ::-webkit-scrollbar {

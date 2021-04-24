@@ -27,10 +27,11 @@ const Favorites = () => {
 export default Favorites;
 
 const StyledContainer = styled(Container)`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  overflow-y: auto;
+
   .favorites-container {
+    margin-left: auto;
+    margin-right: auto;
     max-width: 65rem;
   }
   h2 {

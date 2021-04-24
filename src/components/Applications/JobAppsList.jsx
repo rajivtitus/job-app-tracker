@@ -20,8 +20,6 @@ const JobApplications = () => {
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
 
-  console.log(filter);
-
   const submitData = (jobData) => {
     dispatch(createJobApp(jobData));
     reset();
@@ -156,7 +154,6 @@ const StyledContainer = styled(Container)`
 
   @media (max-width: 980px) {
     flex-direction: column;
-    align-items: center;
     gap: 3.5rem;
 
     .job-apps-container {
@@ -175,6 +172,7 @@ const StyledFormCard = styled(Card)`
 
   @media (max-width: 980px) {
     width: 100%;
+    margin: auto;
   }
 
   h2 {
